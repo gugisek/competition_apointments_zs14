@@ -1,0 +1,113 @@
+* {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+  background: #1c1c1c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+:root {
+  --text: #9233d1;
+  --shadow: #c179f0;
+}
+
+.theme-shadow:hover {
+  box-shadow: 0px 13px 20px var(--text) !important;
+}
+
+.theme-shadow-hover:hover {
+  box-shadow: 0px 10px 20px var(--shadow) !important;
+}
+
+.theme-shadow-button:hover {
+  box-shadow: 0px 6px 20px var(--text) !important;
+}
+
+.theme-text {
+  color: var(--text) !important;
+}
+
+.theme-text-focus:focus {
+  color: var(--text) !important;
+}
+
+.theme-text-hover:hover {
+  color: var(--shadow) !important;
+}
+
+.theme-bg {
+  background-color: var(--text) !important;
+}
+
+.theme-bg-hover:hover {
+  background-color: var(--shadow) !important;
+}
+
+.theme-border {
+  border-color: var(--text);
+}
+
+.theme-border-focus:focus {
+  border-color: var(--text) !important;
+}
+
+.theme-ring-focus:focus {
+  --tw-ring-color: var(--text);
+}
+
+.box-shadow {
+  box-shadow: 13px 14px 60px -13px var(--text);
+}
+
+.theme-bg-gradient {
+  background: rgb(14, 14, 14);
+  background: linear-gradient(
+    167deg,
+    #0e0e0e77 55%,
+    var(--text) 78%,
+    var(--shadow) 97%
+  );
+}
+
+.sidenav-button-active {
+  background-color: #1c1c1c97 !important;
+  color: var(--text) !important;
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
