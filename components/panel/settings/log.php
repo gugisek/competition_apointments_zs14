@@ -31,7 +31,7 @@
 
                     echo "<tr class='hover:bg-[#3d3d3d] transition-all duration-150 border-t-[0.5px] border-b-[0.5px] border-[#3d3d3d]' style='cursor: pointer; cursor: hand;' onclick='openPopupLog(".$row['id'].")'>";
                         echo "<td class='py-3 text-gray-500 text-center text-sm md:table-cell hidden'>".$row['id']."</td>";
-                        echo "<td class='py-3 text-gray-300 text-sm'>".$row['name']." ".$row['sur_name']."</td>";
+                        echo "<td class='py-3 text-gray-300 text-sm capitalize'>".$row['name']." ".$row['sur_name']."</td>";
                         echo "<td class='text-center capitalize text-sm text-gray-400'>".$row['when']."</td>";
                         $description = $row['description'];
                         if (strlen($description) > 50) {

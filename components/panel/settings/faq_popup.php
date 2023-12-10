@@ -6,7 +6,7 @@ if($id == "add"){
     $row['question'] = "";
     $row['answer'] = "";
 }else{
-    include "../../../scripts/conn_db.php";
+    include "../../../scripts/database/conn_db.php";
     if ($type == "zapisy"){
         $sql = "SELECT * FROM zapisy where id=$id";
     }else{
@@ -32,7 +32,7 @@ if($id == "add"){
             if($id!='add'){
                 echo '
                 <button type="button" onclick="openPopupFaqDelete('.$row['id'].')" class="inline-flex items-center gap-x-2 rounded-md bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Usnuń
+                Usuń
             </button>
                 ';
             }

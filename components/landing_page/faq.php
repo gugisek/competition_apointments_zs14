@@ -27,7 +27,7 @@
             </button>
           </dt>
           <dd style="scale: 0; height: 0;" class="duration-300 mt-2 pr-12" id="faq-'.$row['id'].'">
-            <div class="text-base text-gray-500 pb-4">'.$row['answer'].'</div>
+            <div class="text-base text-gray-400 pb-4">'.$row['answer'].'</div>
           </dd>
         </div>
           ';

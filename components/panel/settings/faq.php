@@ -8,12 +8,8 @@ include "../../../scripts/security.php";
                 <h3 class="text-base font-semibold leading-7 text-white">Często zadawane pytania</h3>
                 <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Dodaj lub usuń pytania i odpowiedzi wyświetlane na stronie głównej.</p>
             </div>
-            <button type="button" onclick="openPopupFaqAdd()" class="md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <button type="button" onclick="openPopupFaqAdd()" class="md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Dodaj pytanie
-                    <svg class="-mr-0.5 h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                    </svg>
-
             </button>
         </div>
             <?php

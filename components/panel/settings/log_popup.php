@@ -40,7 +40,7 @@ else {
                     <div class="flex flex-col w-full md:w-1/2">
                         <div class="flex flex-col">
                             <label for="user_id" class="pb-2 pt-2 font-medium text-xs text-[#5d5d5d]">Użytkownik</label>
-                            <input type="text" name="user_id" id="user_id" value="<?php echo $row['name']; echo " "; echo $row['sur_name'] ?>" class="text-sm bg-[#0e0e0e] text-gray-300 border border-[#3d3d3d] rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 transition-all duration-500" disabled>
+                            <input type="text" name="user_id" id="user_id" value="<?php echo $row['name']; echo " "; echo $row['sur_name'] ?>" class="capitalize text-sm bg-[#0e0e0e] text-gray-300 border border-[#3d3d3d] rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 transition-all duration-500" disabled>
                         </div>
                     </div>
                     <div class="flex flex-col w-full md:w-1/2">
