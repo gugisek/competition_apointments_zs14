@@ -9,6 +9,7 @@ $role = $_POST['role_id'];
 $status = $_POST['status_id'];
 $desc = $_POST['desc'];
 $school = $_POST['school_id'];
+$class = $_POST['class_id'];
 
 if($id=="add"){
     $pswd = $_POST['pswd'];
@@ -25,12 +26,12 @@ if($id != "" && $name != "" && $sur_name != "" && $mail != "" && $role != "" && 
         $result_old = mysqli_query($conn, $sql_old);
         $row_old = mysqli_fetch_assoc($result_old);
 
-        if($row_old['name'] != $name || $row_old['sec_name'] != $sec_name || $row_old['sur_name'] != $sur_name || $row_old['mail'] != $mail || $row_old['role_id'] != $role || $row_old['status_id'] != $status || $row_old['description'] != $desc || $row_old['school_id'] != $school){
-            $sql = "UPDATE `users` SET `name`='$name',`sur_name`='$sur_name',`sec_name`='$sec_name',`mail`='$mail',`role_id`='$role',`status_id`='$status',`description`='$desc',`school_id`='$school' WHERE `id` = '$id'";
+        if($row_old['name'] != $name || $row_old['sec_name'] != $sec_name || $row_old['sur_name'] != $sur_name || $row_old['mail'] != $mail || $row_old['role_id'] != $role || $row_old['status_id'] != $status || $row_old['description'] != $desc || $row_old['school_id'] != $school || $row_old['class_id'] != $class){
+            $sql = "UPDATE `users` SET `name`='$name',`sur_name`='$sur_name',`sec_name`='$sec_name',`mail`='$mail',`role_id`='$role',`status_id`='$status',`description`='$desc',`school_id`='$school', `class_id`='$class' WHERE `id` = '$id'";
             mysqli_query($conn, $sql);
             //log
-                    $before = "Imię: ".$row_old['name']."<br/> Nazwisko: ".$row_old['sur_name']."<br/> Drugie imię: ".$row_old['sec_name']."<br/> Mail: ".$row_old['mail']."<br/> Rola: ".$row_old['role_id']."<br/> Status: ".$row_old['status_id']."<br/> Opis: ".$row_old['description']."<br/> Szkoła: ".$row_old['school_id']."";
-                    $after = "Imię: ".$name."<br/> Nazwisko: ".$sur_name."<br/> Drugie imię: ".$sec_name."<br/> Mail: ".$mail."<br/> Rola: ".$role."<br/> Status: ".$status."<br/> Opis: ".$desc."<br/> Szkoła: ".$school.";";
+                    $before = "Imię: ".$row_old['name']."<br/> Nazwisko: ".$row_old['sur_name']."<br/> Drugie imię: ".$row_old['sec_name']."<br/> Mail: ".$row_old['mail']."<br/> Rola: ".$row_old['role_id']."<br/> Status: ".$row_old['status_id']."<br/> Opis: ".$row_old['description']."<br/> Szkoła: ".$row_old['school_id']."<br/> Klasa: ".$row_old['class_id'].";";
+                    $after = "Imię: ".$name."<br/> Nazwisko: ".$sur_name."<br/> Drugie imię: ".$sec_name."<br/> Mail: ".$mail."<br/> Rola: ".$role."<br/> Status: ".$status."<br/> Opis: ".$desc."<br/> Szkoła: ".$school."<br/> Klasa: ".$class.";";
                     $object_id=$id;
                     $object_type="users";
                     $action_type="1";
@@ -165,12 +166,12 @@ if($id != "" && $name != "" && $sur_name != "" && $mail != "" && $role != "" && 
         }
     }else{
        // $sql = "INSERT INTO `users`(`name`, `sur_name`, `sec_name`, `mail`, `role_id`, `status_id`, `description`, `school_id`) VALUES ('$name', '$sur_name', '$sec_name', '$mail', '$role', '$status', '$desc', '$school')";
-       $sql = "INSERT INTO `users` (`id`, `login`, `name`, `sec_name`, `sur_name`, `pswd`, `mail`, `role_id`, `create_date`, `update_date`, `status_id`, `description`, `school_id`, `profile_picture`, `background_picture`) VALUES (NULL, '$login', '$name', '$sec_name', '$sur_name', '$pswd', '$mail', '$role', current_timestamp(), current_timestamp(), '$status', '$desc', '$school', NULL, NULL);";
+       $sql = "INSERT INTO `users` (`id`, `login`, `name`, `sec_name`, `sur_name`, `pswd`, `mail`, `role_id`, `create_date`, `update_date`, `status_id`, `description`, `school_id`, `profile_picture`, `background_picture`, `class_id`) VALUES (NULL, '$login', '$name', '$sec_name', '$sur_name', '$pswd', '$mail', '$role', current_timestamp(), current_timestamp(), '$status', '$desc', '$school', NULL, NULL, $class);";
        mysqli_query($conn, $sql);
         $id = mysqli_insert_id($conn);
         //log
                     $before = "";
-                    $after = "Imię: ".$name." <br/>Nazwisko: ".$sur_name." <br/>Drugie imię: ".$sec_name." <br/>Mail: ".$mail." <br/>Rola: ".$role."<br/> Status: ".$status."<br/> Opis: ".$desc."<br/> Szkoła: ".$school.";";
+                    $after = "Imię: ".$name." <br/>Nazwisko: ".$sur_name." <br/>Drugie imię: ".$sec_name." <br/>Mail: ".$mail." <br/>Rola: ".$role."<br/> Status: ".$status."<br/> Opis: ".$desc."<br/> Szkoła: ".$school."<br/> Klasa: ".$class.";";
                     $object_id=$id;
                     $object_type="users";
                     $action_type="2";
@@ -300,5 +301,5 @@ if($id != "" && $name != "" && $sur_name != "" && $mail != "" && $role != "" && 
     $$_SESSION['alert'] = 'Nie wprowadzono wszystkich danych';
     $_SESSION['alert_type'] = 'error';
 }
-//header("Location: ../../panel.php");
+header("Location: ../../panel.php");
 ?>

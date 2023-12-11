@@ -39,6 +39,7 @@ $school = $row['name'];
                       <dt class="text-sm font-medium leading-6 text-gray-300">Klasa</dt>
                       <select name="class_id" class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
                           <option value="" class="hidden" disabled selected>Wybierz</option>
+                          <option class="<?php if($role_id==4){echo 'hidden';}?>" value="0">Brak</option>
                           <?php
                           $sql = "SELECT class_id, user_class.name FROM `user_class`;";
                           $result = mysqli_query($conn, $sql);

@@ -4,19 +4,19 @@
 <div class="px-4 sm:px-6 lg:px-8">
   <div class="sm:flex sm:items-center pb-8">
     <div class="sm:flex-auto">
-      <h1 class="text-base font-semibold leading-6 text-gray-300">Użytkownicy</h1>
-      <p class="mt-2 text-sm text-gray-500">Lista wszystkich użytkowników całego serwisu, kliknij na użytkownika aby go edytować.</p>
+      <h1 class="text-base font-semibold leading-6 text-gray-300">Nauczyciele</h1>
+      <p class="mt-2 text-sm text-gray-500">Lista wszystkich nauczycieli w Twojej szkole.</p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button type="button" onclick="openPopupSchools('add')" class="active:scale-95 duration-150 md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-            Dodaj użytkownika
+            Dodaj nauczyciela
         </button>
     </div>
   </div>
     <div class="">
         <table class="w-full">
             <tr class="uppercase text-left text-xs text-gray-400 border-b border-white/5">
-                <th class="">Użytkownik</th>
+                <th class="">Nauczyciel</th>
                 <th class="px-3 py-3.5 sm:table-cell hidden">Status</th>
                 <th class="px-3 py-3.5 sm:table-cell hidden">Rola</th>
                 <th class="px-3 py-3.5 sm:table-cell hidden">Szkoła</th>
@@ -24,17 +24,12 @@
             </tr>
             <?php        
                 include "../../scripts/database/conn_db.php";
-                if (isset($_POST['search'])) {
-                    $search = $_POST['search'];
-                    $role = $_POST['role'];
-                    $status = $_POST['status'];
-                }
-                else {
-                    $search = "";
-                    $role = "";
-                    $status = "";
-                }
-                $sql = "SELECT users.id, users.name, users.sec_name, user_class.name as klasa, user_class.profile, users.description, users.mail, users.profile_picture, users.background_picture, schools.name as szkola, users.sur_name, user_roles.role, users.create_date, user_status.status, colors.name as status_color FROM `users` left join user_roles on users.role_id=user_roles.id left join user_status on user_status.id=users.status_id left join colors on colors.id=user_status.color_id left join schools on schools.school_id=users.school_id left join user_class on user_class.class_id=users.class_id where users.name != 'deleted_user' order by users.id asc;";
+                $sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $school_id = $row['school_id'];
+
+                $sql = "SELECT users.id, users.name, users.sec_name, user_class.name as klasa, user_class.profile, users.description, users.mail, users.profile_picture, users.background_picture, schools.name as szkola, users.sur_name, user_roles.role, users.create_date, user_status.status, colors.name as status_color FROM `users` left join user_roles on users.role_id=user_roles.id left join user_status on user_status.id=users.status_id left join colors on colors.id=user_status.color_id left join schools on schools.school_id=users.school_id left join user_class on user_class.class_id=users.class_id where users.name != 'deleted_user' and role_id=3 and users.school_id='$school_id' order by users.id asc;";
                 $result = mysqli_query($conn, $sql);
                 if(mysqli_num_rows($result) > 0)
                 {
@@ -78,8 +73,8 @@
                         ';
                     }
                 } else {
-                    echo "<tr class='border-t-[0.5px] border-b-[0.5px]'>";
-                        echo "<td class='py-3 text-gray-800 leading-4 text-sm'>Brak wyników</td>";
+                    echo "<tr class='border-t-[0.5px] border-b-[0.5px] border-white/10'>";
+                        echo "<td class='py-3 text-gray-500 leading-4 text-sm'>Nie ma tu jeszcze żadnych nauczycieli</td>";
                         echo "<td class='text-center capitalize text-sm text-gray-500'></td>";
                         echo "<td class='text-center capitalize text-sm text-gray-500'></td>";
                         echo "<td class='text-center text-sm text-gray-500'></td>";
@@ -117,7 +112,7 @@
         var popupOutput = document.getElementById("pupupSchoolsOutput");
         popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
         popupSchoolsOpenClose();
-        const url = "components/panel/users/users_popup.php?id="+id;
+        const url = "components/panel/adm_nauczyciele_popup.php?id="+id;
         fetch(url)
             .then(response => response.text())
             .then(data => {

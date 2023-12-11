@@ -1,6 +1,6 @@
 <?php
-include '../../../scripts/security.php';
-include '../../../scripts/database/conn_db.php';
+include '../../scripts/security.php';
+include '../../scripts/database/conn_db.php';
 $id = $_GET['id'];
 if($id!='add'){
     $sql = "SELECT users.id, users.name, users.sec_name, users.sur_name, users.mail, user_class.class_id, users.role_id, user_roles.role, users.status_id, users.description, users.school_id, schools.name as school, users.profile_picture, users.background_picture FROM `users` join schools on schools.school_id=users.school_id join user_roles on user_roles.id=users.role_id left join user_class on user_class.class_id=users.class_id WHERE users.id='$id'";
@@ -38,8 +38,11 @@ if($id!='add'){
     $profile_picture = 'default.png';
     $background_picture = 'default_bg.avif';
     $status_id = '0';
-    $role_id = '0';
-    $school_id = '0';
+    $role_id = '3';
+    $sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $school_id = $row['school_id'];
     $school = '';
     $role = '';
     $class_id = '0';
@@ -52,9 +55,9 @@ if($id!='add'){
             <h1 class="font-medium py-6 text-gray-300">
               <?php
               if($id=='add'){
-                  echo 'Dodaj użytkownika';
+                  echo 'Dodaj nauczyciela';
               }else if($id!='edit'){
-                  echo 'Edytuj użytkownika';
+                  echo 'Edytuj nauczyciela';
               }
               ?>
             </h1>
@@ -146,10 +149,11 @@ if($id!='add'){
                     <div class="grid md:grid-cols-2 grid-cols-1 w-full gap-4">
                       <div class="px-4 py-2 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-300">Rola</dt>
-                        <select name="role_id" class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
+                        <input type="hidden" name="role_id" value="<?=$role_id?>">
+                        <select name="role_id" disabled class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
                           <option value="" class="hidden" disabled selected>Wybierz</option>
                           <?php
-                          $sql = "SELECT * FROM `user_roles`";
+                          $sql = "SELECT * FROM `user_roles` where id!=1";
                           $result = mysqli_query($conn, $sql);
                           while($row = mysqli_fetch_assoc($result)) {
                             echo '<option ';
@@ -182,7 +186,8 @@ if($id!='add'){
                     <div class="grid md:grid-cols-3 gap-4">
                       <div class="px-4 py-2 sm:px-0 md:col-span-2">
                         <dt class="text-sm font-medium leading-6 text-gray-300">Szkoła</dt>
-                        <select name="school_id" class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
+                        <input type="hidden" name="school_id" value="<?=$school_id?>">
+                        <select name="school_id" disabled class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
                           <option value="" class="hidden" disabled selected>Wybierz</option>
                           <?php
                           $sql = "SELECT * FROM `schools`";
@@ -200,19 +205,7 @@ if($id!='add'){
                       <div class="px-4 py-2 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-300">Klasa</dt>
                         <select name="class_id" class="mt-1 outline-none duration-150 capitalize relative w-full cursor-default rounded-md bg-[#0e0e0e] focus:text-white py-1.5 pl-3 pr-10 text-left text-gray-400 shadow-sm ring-1 ring-inset ring-[#3d3d3d] focus:outline-none focus:ring-2 theme-ring-focus sm:text-sm sm:leading-6" required>
-                          <option value="" class="hidden" disabled selected>Wybierz</option>
-                          <option value="0" class="capitalize">Brak</option>
-                          <?php
-                          $sql = "SELECT * FROM `user_class` where school_id=$school_id";
-                          $result = mysqli_query($conn, $sql);
-                          while($row = mysqli_fetch_assoc($result)) {
-                            echo '<option ';
-                            if($row['class_id'] == $class_id) {
-                              echo 'selected ';
-                            }
-                            echo ' value="'.$row['class_id'].'" class="capitalize">'.$row['name'].'</option>';
-                          }
-                          ?>
+                          <option value="0" selected class="capitalize">Brak</option>
                         </select>
                       </div>
                     </div>

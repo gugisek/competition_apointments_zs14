@@ -1,13 +1,13 @@
 <?php
-$id = $_GET['id'];
-if($id=='add'){
-  $name = '';
-  $adres = '';
-  $city = '';
-  $quantity = '';
-  $logo = 'default.png';
-}else {
-  include "../../../scripts/database/conn_db.php";
+include "../../../scripts/security.php";
+include "../../../scripts/database/conn_db.php";
+
+$sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$id = $row['school_id'];
+
+
   $sql = "SELECT schools.school_id, schools.name, schools.logo, schools.addres, schools.city, count(buildings.build_id) as buildings_num FROM schools left join buildings on buildings.school_id=schools.school_id WHERE schools.school_id=$id group by schools.school_id;";
   $result = mysqli_query($conn, $sql);
   if(mysqli_num_rows($result) > 0)
@@ -25,43 +25,19 @@ if($id=='add'){
       }
     }
   }
-}
+
 ?>
-<form action="scripts/schools/back_schools.php" method="POST" class="text-white flex flex-col h-full gap-4 px-2 pb-8" enctype="multipart/form-data">
+<form action="scripts/schools/back_schools.php" method="POST" class="sm:px-6 lg:px-8 text-white flex flex-col h-full gap-4 px-4 pb-8" enctype="multipart/form-data">
     <input type="hidden" name="school_id" value="<?=$id?>">
-    <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
+    <div class="sticky z-[10] top-0 flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
       <h1 class="font-medium py-6">
-        <?php
-        if($id=='add'){
-            echo 'Dodaj szkołę';
-        }else if($id!='edit'){
-            echo 'Edytuj szkołę';
-        }
-        ?>
+        Edytuj szkołę
       </h1>
       <div class="text-center flex items-center">
-            <?php
-            if($id!='add'){
-                echo '
-              <button onclick="popupSchoolsDelete()" type="button" class="flex items-center rounded-md text-red-500 hover:text-red-700 gap-1 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
-                <span class="text-xs uppercase">Usuń</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                  <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
-                </svg>
-              </button>
-                ';
-            }
-            ?>
             <button class="flex items-center rounded-md text-green-500 hover:text-green-700 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
               <span class="text-xs uppercase">Zapisz</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <button onclick="popupSchoolsCloseConfirm()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
-              <span class="sr-only">Zamknij</span>
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
         </div>
@@ -80,20 +56,20 @@ if($id=='add'){
           <div class="grid grid-cols-5 gap-4">
             <div class="px-4 py-2 sm:px-0 col-span-3">
               <dt class="text-sm font-medium leading-6 text-gray-300">Nazwa szkoły</dt>
-              <input name="name" required type="text" value="<?=$name?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
+              <input name="name" required type="text" value="<?=$name?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-black/10 focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
             </div>
             <div class="px-4 py-2 sm:px-0 col-span-2">
               <dt class="text-sm font-medium leading-6 text-gray-300">Ilość budynków</dt>
-              <input onchange="buildings()" min="1" name="buildings_cuantity" id="buildings_cuantity" required type="number" value="<?=$quantity?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
+              <input onchange="buildings()" min="1" name="buildings_cuantity" id="buildings_cuantity" required type="number" value="<?=$quantity?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-black/10 focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
             </div>
           </div>
           <div class="px-4 py-2 sm:px-0 col-span-3">
               <dt class="text-sm font-medium leading-6 text-gray-300">Adres</dt>
-              <input name="addres" required type="text" value="<?=$adres?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
+              <input name="addres" required type="text" value="<?=$adres?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-black/10 focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
           </div>
           <div class="px-4 py-2 sm:px-0 col-span-3">
               <dt class="text-sm font-medium leading-6 text-gray-300">Miasto</dt>
-              <input name="city" required type="text" value="<?=$city?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
+              <input name="city" required type="text" value="<?=$city?>" class="capitalize w-full text-gray-400 text-sm focus:text-white bg-black/10 focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
           </div>
           
         </div>

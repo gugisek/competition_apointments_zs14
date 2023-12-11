@@ -30,7 +30,7 @@
                   <p id="rozliczanie" class="text-gray-400">Rozliczane rocznie</p>
                 </div>
               </div>
-              <a href="register.php" aria-describedby="tier-starter" class="rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-white/10 theme-bg-hover transition-all duration-150 focus-visible:outline-white">Zarejestruj</a>
+              <a href="register.php" aria-describedby="tier-starter" class="rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-white/10 theme-bg-hover transition-all duration-150 focus-visible:outline-white">Zarejestruj się</a>
             </div>
             <div class="mt-8 flow-root sm:mt-10">
               <ul role="list" class="-my-2 divide-y border-t text-sm leading-6 lg:border-t-0 divide-white/5 border-white/5 text-white">
@@ -69,7 +69,7 @@
                   <p id="rozliczanie" class="text-gray-500">Rozliczane rocznie</p>
                 </div>
               </div>
-              <a href="register.php" aria-describedby="tier-scale" class="rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 theme-bg theme-bg-hover transition-all duration-150 shadow-sm focus-visible:outline-indigo-600">Zarejestruj</a>
+              <a href="register.php" aria-describedby="tier-scale" class="rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 theme-bg theme-bg-hover transition-all duration-150 shadow-sm focus-visible:outline-indigo-600">Zarejestruj się</a>
             </div>
             <div class="mt-8 flow-root sm:mt-10">
               <ul role="list" class="-my-2 divide-y border-t text-sm leading-6 lg:border-t-0 divide-gray-900/5 border-gray-900/5 text-gray-600">
@@ -89,7 +89,7 @@
                   <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                   </svg>
-                  Możliwość zmiany motywu panelu
+                  Możliwość ustawienia własnego tła!
                 </li>
                 
               </ul>

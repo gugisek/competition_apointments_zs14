@@ -49,8 +49,9 @@ if ($name != '' && $sur_name != '' && $class_id !='' && $code !='') {
             $_SESSION['alert'] = 'Zweryfikowano pomyślnie.';
             $_SESSION['alert_type'] = 'success';
 
-            $_SESSION['user'] = $name;
+            $_SESSION['user'] = $name.' '.$sur_name;
             $_SESSION['account_status'] = 1;
+            
         }
         else
         {

@@ -46,7 +46,7 @@
             <option value="" class="hidden" disabled selected>Wybierz</option>
             <?php
             include 'scripts/database/conn_db.php';
-            $sql = "SELECT id, role FROM `user_roles` where id = 3 or id = 4";
+            $sql = "SELECT id, role FROM `user_roles` where id = 2 or id = 3 or id = 4";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 echo '<option value="'.$row['id'].'" class="capitalize">'.$row['role'].'</option>';

@@ -6,7 +6,7 @@ include "../../scripts/security.php";
     <div class="px-4 mb-6 sm:px-0 flex md:flex-row flex-col justify-between items-center">
         <div>
             <h3 class="text-base font-semibold leading-7 text-white">Zaproszenia</h3>
-            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Wygeneruj i zarządzaj zaproszeniami dla szkół, uczniów i nauczycieli.</p>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Wygeneruj i zarządzaj zaproszeniami dla uczniów i nauczycieli w Twojej szkole</p>
         </div>
         <button type="button" onclick="openPopupInviteAdd()" class="active:scale-95 duration-150 md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Dodaj zaproszenie
@@ -14,13 +14,13 @@ include "../../scripts/security.php";
     </div>
 
     <ol class="mt-2 divide-y divide-white/10 text-sm leading-6 text-gray-500">
-      <!-- <li class="py-4 sm:flex hover:bg-[#3d3d3d] duration-150 cursor-pointer">
-        <p class="mt-2 flex-auto sm:mt-0 text-gray-300">Wielki Turniej CS:GO Szanajcy <span class="text-xs text-gray-500">Edycja pierwsza</span></p>
-        <p class="flex-none sm:ml-6">1 grudnia 2023 - 2 luteń 2023</p>
-      </li> -->
       <?php
       include "../../scripts/database/conn_db.php";
-      $sql = "SELECT invitations.invite_id, invitations.code, schools.name, user_roles.role, invitations.uses, invitations.max_uses FROM `invitations` join schools ON schools.school_id=invitations.school_id join user_roles on user_roles.id=invitations.role_id;";
+      $sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
+      $result = mysqli_query($conn, $sql);
+      $row = mysqli_fetch_assoc($result);
+      $school_id = $row['school_id'];
+      $sql = "SELECT invitations.invite_id, invitations.code, schools.name, user_roles.role, invitations.uses, invitations.max_uses FROM `invitations` join schools ON schools.school_id=invitations.school_id join user_roles on user_roles.id=invitations.role_id where invitations.school_id='$school_id' order by invitations.invite_id desc;";
       $result = mysqli_query($conn, $sql);
       while($row = mysqli_fetch_assoc($result)) {
         echo '<li class="w-full">
@@ -128,7 +128,7 @@ include "../../scripts/security.php";
         var popupOutput = document.getElementById("pupupSchoolsOutput");
         popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
         popupInviteOpenClose()
-        const url = "components/panel/invite/add_popup.php?";
+        const url = "components/panel/invite/adm_add_popup.php?";
         fetch(url)
             .then(response => response.text())
             .then(data => {
