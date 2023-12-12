@@ -50,9 +50,18 @@
   var EventTempSettings = {};
   //skrypt otwiera podstrony panelu
 function forOpen(site) {
+  var removeButtons = document.querySelectorAll("#dashboard");
+    for (var i = 0; i < removeButtons.length; i++) {
+      removeButtons[i].classList.remove("sidenav-button-active");
+    }
+
+    const url = site;
+    var activeButtons = document.querySelectorAll("#" + url.replace("components/panel/", "").replace(".php", ""));
+    for(var i = 0; i < activeButtons.length; i++) {  
+      activeButtons[i].classList.add("sidenav-button-active");
+    }
   var panel_body = document.getElementById("panel_body");
   panel_body.innerHTML =  "<div data-aos='zoom-in' data-aos-delay='100' class='flex justify-center items-center h-[80vh]'><div class='flex flex-col justify-center items-center'><div class='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900'></div><div class='text-white text-xl font-semibold mt-4'>Ładowanie...</div></div>";
-  const url = site;
   fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -73,6 +82,7 @@ function forOpen(site) {
       // Zapisz URL w localStorage
       localStorage.setItem("panelPage", site);
     });
+    
 }
 
   var sidenavButtons = document.querySelectorAll(".sidenav-button");
@@ -117,6 +127,13 @@ function forOpen(site) {
       backdrop.classList.toggle('opacity-0')
       sidebar.classList.toggle('pointer-events-none')
       backdrop.classList.toggle('pointer-events-none')
+    }
+
+    function mobileClose() {
+      sidebar.classList.add('left-[-100%]')
+      backdrop.classList.add('opacity-0')
+      sidebar.classList.add('pointer-events-none')
+      backdrop.classList.add('pointer-events-none')
     }
     button.addEventListener('click', () => {
       toggleNavMobile()

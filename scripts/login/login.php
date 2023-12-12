@@ -27,7 +27,13 @@ if(mysqli_num_rows($result) > 0)
         $_SESSION['account_type'] = $row['role_id'];
         $_SESSION['account_type_name'] = $row['role'];
         $_SESSION['account_status'] = $row['status_id'];
-        header('Location: ../../panel.php');
+        echo '
+        <script>
+        localStorage.setItem("panelPage", "components/panel/dashboard.php");
+        window.location.href = "../../panel.php";
+        </script>
+        ';
+        
     }
     else
     {

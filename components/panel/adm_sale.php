@@ -21,7 +21,7 @@ include "../../scripts/security.php";
     <ol class="mt-2 divide-y divide-white/10 text-sm leading-6 text-gray-500">
       <?php
 
-      $sql = "SELECT rooms.room_id, rooms.name as 'sala', schools.name as 'school', buildings.name as 'budynek', buildings.street as 'adres' FROM `rooms` join schools on schools.school_id=rooms.school_id join buildings on buildings.build_id=rooms.build_id where rooms.school_id=$school_id order by rooms.name asc;";
+      $sql = "SELECT rooms.room_id, rooms.name as 'sala', schools.name as 'school', buildings.name as 'budynek', buildings.street as 'adres' FROM `rooms` join schools on schools.school_id=rooms.school_id join buildings on buildings.build_id=rooms.build_id where rooms.school_id=$school_id order by rooms.build_id asc, rooms.name asc;";
       $result = mysqli_query($conn, $sql);
       while($row = mysqli_fetch_assoc($result)) {
         echo '<li class="w-full">

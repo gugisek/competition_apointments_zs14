@@ -21,7 +21,7 @@ include "../../scripts/security.php";
     <ol class="mt-2 divide-y divide-white/10 text-sm leading-6 text-gray-500">
       <?php
 
-      $sql = "SELECT user_class.class_id, user_class.name, user_class.profile, user_class.rocznik, count(users.id) as 'uczniow' FROM `user_class` left join users on users.class_id=user_class.class_id where user_class.school_id=$school_id group by user_class.class_id;";
+      $sql = "SELECT user_class.class_id, user_class.name, user_class.profile, user_class.rocznik, count(users.id) as 'uczniow' FROM `user_class` left join users on users.class_id=user_class.class_id where user_class.school_id=$school_id group by user_class.class_id order by name asc;";
       $result = mysqli_query($conn, $sql);
       while($row = mysqli_fetch_assoc($result)) {
         echo '<li class="w-full">

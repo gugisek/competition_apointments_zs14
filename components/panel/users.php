@@ -45,9 +45,11 @@
                         if ($row['profile_picture'] == NULL) {
                             $row['profile_picture'] = 'default.png';
                         }
-                        if ($row['background_picture'] == NULL) {
-                            $row['background_picture'] = 'default.avif';
-                        }
+                        // if($row['background_picture'] == null){
+                        // $background_picture_hover = "class='bg-[#0e0e0e] rounded-xl shadow-xl'";
+                        // }else{
+                        // $background_picture_hover = "style='background-image: url(public/img/users/".$row['background_picture']."); background-size: cover; background-position: center;' class='rounded-xl schadow-xl'";
+                        // }
                         if ($row['description'] == NULL) {
                             $desc = 'Nic tu nie ma ciekawego...';
                         }else {
@@ -59,6 +61,7 @@
                             <td class="whitespace-nowrap py-4 text-sm">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
+                                    
                                     <img class="h-10 w-10 rounded-full object-cover" src="public/img/users/'.$row['profile_picture'].'" alt="">
                                     </div>
                                     <div class="ml-4">
@@ -91,6 +94,31 @@
     </div>
 </div>
 </section>
+<!-- <script>
+    // Pobieramy wszystkie wiersze tabeli
+    const rows = document.querySelectorAll('.hoverable-row');
+
+    // Dla każdego wiersza tabeli
+    rows.forEach(row => {
+        // Dodajemy nasłuchiwanie zdarzenia "mouseenter" na wierszu
+        row.addEventListener('mouseenter', () => {
+            // Znajdujemy sekcję, którą chcemy pokazać (możesz zmodyfikować selektor według potrzeb)
+            const section = document.querySelector('#hover_profile_info_users_' + row.querySelector('td:first-child').innerText);
+
+            // Ustawiamy sekcję na widoczną i interaktywną (dowolne klasy CSS)
+            section.classList.add('opacity-100', 'pointer-events-auto');
+        });
+
+        // Dodajemy nasłuchiwanie zdarzenia "mouseleave" na wierszu
+        row.addEventListener('mouseleave', () => {
+            // Znajdujemy sekcję, którą chcemy ukryć
+            const section = document.querySelector('#hover_profile_info_users_' + row.querySelector('td:first-child').innerText);
+
+            // Ustawiamy sekcję na niewidoczną i niemożliwą do interakcji
+            section.classList.remove('opacity-100', 'pointer-events-auto');
+        });
+    });
+</script> -->
 
 <section id="popupSchoolsBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
   <section id="popupSchools" onclick="popupSchoolsCloseConfirm()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
@@ -103,7 +131,7 @@
     </div>
   </section>
 
-    <script>
+<script>
     function popupSchoolsOpenClose() {
        var popup = document.getElementById("popupSchools")
        var popupBg = document.getElementById("popupSchoolsBg")
