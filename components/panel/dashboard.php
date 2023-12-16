@@ -125,13 +125,21 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                     <h2 class="text-base font-medium leading-7 text-gray-100">Twoje korepetycje</h2>
                     <a onclick="forOpen(`components/panel/nau_korepetycje.php`)" class="cursor-pointer text-sm font-semibold leading-6 theme-text theme-text-hover duration-150 transition-all">Wszystkie</a>
                 </header>
-                <ul role="list" class="divide-y divide-white/5">
+                <ul data-aos="fade-left" data-aos-delay="600" role="list" class="divide-y divide-white/5">
                     <?php
-                        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+                        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
                         $result = mysqli_query($conn, $sql);
-                        $i=6;
                         $is = false;
                         while($row = mysqli_fetch_assoc($result)){
+                            $destiny = $row['dla'];
+                            if($row['dla'] != 'wszyscy'){
+                            $destiny = '';
+                            $sql2 = "select user_class.name from user_class where class_id in (10, 8, 1);";
+                            $result2 = mysqli_query($conn, $sql2);
+                                while($row2 = mysqli_fetch_assoc($result2)){
+                                $destiny .= "$row2[name] ";
+                                }
+                            }
                             $is = true;
                             //zamiana daty w formacie rok-miesiąc-dzień na nazwa dnia dzień nazwa miesiąca w języku polskim
                             if($row['data'] == date('Y-m-d')) {
@@ -180,13 +188,13 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                             }
 
                             echo '
-                            <li data-aos="fade-left" data-aos-delay="'.$i.'00" class="">
+                            <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="">
                                 <div class="hover:bg-[#3d3d3d]/60 cursor-pointer duration-150 transition-all px-4 py-4 sm:px-6 lg:px-8">
                                     <div class="flex items-center gap-x-3">
                                         <img src="public/img/users/'.$row['profilowe'].'" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
                                         <h3 class="capitalize flex-auto truncate text-sm font-medium leading-3 text-gray-200">
                                         '.$row['przedmiot'].'</br>
-                                        <span class="text-xs lowercase font-normal text-gray-500">'.$row['dla'].'</span>
+                                        <span class="text-xs lowercase font-normal text-gray-500">'.$destiny.'</span>
                                         </h3>
                                         <time datetime="2023-01-23T11:00" class="flex-none text-xs text-gray-500">'.$row['godzina'].'</time>
                                     </div>
@@ -202,7 +210,6 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                                 </div>
                             </li>
                             ';
-                            $i++;
                         }
                         if($is == false){
                             echo '<p data-aos="fade-left" data-aos-delay="500" class="text-center text-gray-500 py-8">Nie masz żadnych nadchodzących korepetycji</p>';
@@ -215,3 +222,49 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
         </div>
 
 </section>
+      <section id="popupInfoKorepetycjeBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
+  <section id="popupInfoKorepetycje" onclick="popupInfoKorepetycjeOpenClose()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
+    <div class="flex items-center justify-center w-full h-full px-2">
+      <div onclick="event.cancelBubble=true;" class="bg-[#0e0e0e] md:min-w-[800px] md:w-auto w-full max-w-[800px] max-h-[80vh] overflow-y-auto flex md:flex-row flex-col gap-4 rounded-2xl sm:px-6  -xl">
+        <div id="popupItself" class="flex h-auto w-full justify-between flex-col">
+            <div id="pupupInfoKorepetycjeOutput"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  function popupInfoKorepetycjeOpenClose() {
+       var popup = document.getElementById("popupInfoKorepetycje")
+       var popupBg = document.getElementById("popupInfoKorepetycjeBg")
+       popupBg.classList.toggle("opacity-0")
+       popupBg.classList.toggle("h-0")
+       popup.classList.toggle("scale-0")
+       popup.classList.add("duration-200")
+
+    }
+
+  function popup_info_korepetycje(id){
+        var popupOutput = document.getElementById("pupupInfoKorepetycjeOutput");
+        popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
+        popupInfoKorepetycjeOpenClose()
+        const url = "components/panel/nau_korepetycje_popup_info.php?id="+id;
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+            const parser = new DOMParser();
+            const parsedDocument = parser.parseFromString(data, "text/html");
+
+            // Wstaw zawartość strony (bez skryptów) do "panel_body"
+            popupOutput.innerHTML = parsedDocument.body.innerHTML;
+
+            // Przechodź przez znalezione skrypty i wykonuj je
+            const scripts = parsedDocument.querySelectorAll("script");
+            scripts.forEach(script => {
+                const scriptElement = document.createElement("script");
+                scriptElement.textContent = script.textContent;
+                document.body.appendChild(scriptElement);
+            });
+            });
+  }
+</script>

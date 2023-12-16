@@ -8,31 +8,29 @@ include '../../scripts/security.php';
                     <h3 class="text-base font-semibold leading-7 text-white">Korepetycje</h3>
                     <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Twórz i zarządzaj swoimi korepetycjami, pamiętaj starsze niż dzień nie są wyświetlane.</p>
                 </div>
-                <button type="button" onclick="openPopupSchools('<?=$school_id?>')" class="active:scale-95 duration-150 md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <button type="button" onclick="openPopupAddKorepetycje()" class="active:scale-95 duration-150 md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Utwórz korepetycje
                 </button>
             </div>
       </header>
-      <select class="js-example-basic-multiple" multiple="multiple">
-    <option value="1">Opcja 1</option>
-    <option value="2">Opcja 2</option>
-    <option value="3">Opcja 3</option>
-    <!-- Możesz dodać więcej opcji według potrzeb -->
-</select>
-      <script>
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2();
-    });
-</script>
       <!-- Deployment list -->
       <ul role="list" class="divide-y divide-white/5">
         <?php
         include "../../scripts/database/conn_db.php";
         $login_id = $_SESSION['login_id'];
-        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
         $result = mysqli_query($conn, $sql);
         $is = false;
         while($row = mysqli_fetch_assoc($result)){
+          $destiny = $row['destiny'];
+            if($row['destiny'] != 'wszyscy'){
+              $destiny = '';
+              $sql2 = "select user_class.name from user_class where class_id in (10, 8, 1);";
+              $result2 = mysqli_query($conn, $sql2);
+                 while($row2 = mysqli_fetch_assoc($result2)){
+                  $destiny .= "$row2[name] ";
+                 }
+            }
             $is = true;
             //zamiana daty w formacie rok-miesiąc-dzień na nazwa dnia dzień nazwa miesiąca w języku polskim
             $data = $row['data'];
@@ -75,17 +73,17 @@ include '../../scripts/security.php';
             $miesiacPl = $miesiacePl[$miesiac];
 
             echo '
-            <li class="hover:bg-[#3d3d3d]/70 transition-all duration-150 cursor-pointer relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
+            <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="hover:bg-[#3d3d3d]/70 transition-all duration-150 cursor-pointer relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
           <div class="min-w-0 flex-auto">
             <div class="flex items-center gap-x-3">
               <div class="flex-none rounded-full p-1 text-green-500 bg-green-100/10">
                 <div class="h-2 w-2 rounded-full bg-current"></div>
               </div>
               <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
-                <a href="#" class="flex gap-x-2">
+                <a class="flex gap-x-2">
                   <span class="truncate capitalize">'.$row['przedmiot'].'</span>
                   <span class="text-gray-400">/</span>
-                  <span class="whitespace-nowrap">'.$row['dla'].'</span>
+                  <span class="whitespace-nowrap">'.$destiny.'</span>
                   <span class="absolute inset-0"></span>
                 </a>
               </h2>
@@ -141,3 +139,97 @@ include '../../scripts/security.php';
         <!-- More deployments... -->
       </ul>
     </main>
+
+    <section id="popupAddKorepetycjeBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
+  <section id="popupAddKorepetycje" onclick="popupAddKorepetycjeCloseConfirm()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
+    <div class="flex items-center justify-center w-full h-full px-2">
+      <div onclick="event.cancelBubble=true;" class="bg-[#0e0e0e] md:min-w-[800px] md:w-auto w-full max-w-[800px] max-h-[80vh] overflow-y-auto flex md:flex-row flex-col gap-4 rounded-2xl sm:px-6  -xl">
+        <div id="popupItself" class="flex h-auto w-full justify-between flex-col">
+            <div id="pupupAddKorepetycjeOutput"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+      <section id="popupInfoKorepetycjeBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
+  <section id="popupInfoKorepetycje" onclick="popupInfoKorepetycjeOpenClose()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
+    <div class="flex items-center justify-center w-full h-full px-2">
+      <div onclick="event.cancelBubble=true;" class="bg-[#0e0e0e] md:min-w-[800px] md:w-auto w-full max-w-[800px] max-h-[80vh] overflow-y-auto flex md:flex-row flex-col gap-4 rounded-2xl sm:px-6  -xl">
+        <div id="popupItself" class="flex h-auto w-full justify-between flex-col">
+            <div id="pupupInfoKorepetycjeOutput"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  function popupInfoKorepetycjeOpenClose() {
+       var popup = document.getElementById("popupInfoKorepetycje")
+       var popupBg = document.getElementById("popupInfoKorepetycjeBg")
+       popupBg.classList.toggle("opacity-0")
+       popupBg.classList.toggle("h-0")
+       popup.classList.toggle("scale-0")
+       popup.classList.add("duration-200")
+
+    }
+
+  function popup_info_korepetycje(id){
+        var popupOutput = document.getElementById("pupupInfoKorepetycjeOutput");
+        popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
+        popupInfoKorepetycjeOpenClose()
+        const url = "components/panel/nau_korepetycje_popup_info.php?id="+id;
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+            const parser = new DOMParser();
+            const parsedDocument = parser.parseFromString(data, "text/html");
+
+            // Wstaw zawartość strony (bez skryptów) do "panel_body"
+            popupOutput.innerHTML = parsedDocument.body.innerHTML;
+
+            // Przechodź przez znalezione skrypty i wykonuj je
+            const scripts = parsedDocument.querySelectorAll("script");
+            scripts.forEach(script => {
+                const scriptElement = document.createElement("script");
+                scriptElement.textContent = script.textContent;
+                document.body.appendChild(scriptElement);
+            });
+            });
+  }
+</script>
+  
+  <script>
+    function popupAddKorepetycjeOpenClose() {
+       var popup = document.getElementById("popupAddKorepetycje")
+       var popupBg = document.getElementById("popupAddKorepetycjeBg")
+       popupBg.classList.toggle("opacity-0")
+       popupBg.classList.toggle("h-0")
+       popup.classList.toggle("scale-0")
+       popup.classList.add("duration-200")
+
+    }
+    function openPopupAddKorepetycje() {
+        var popupOutput = document.getElementById("pupupAddKorepetycjeOutput");
+        popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
+        popupAddKorepetycjeOpenClose()
+        const url = "components/panel/nau_korepetycje_popup_add.php";
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+            const parser = new DOMParser();
+            const parsedDocument = parser.parseFromString(data, "text/html");
+
+            // Wstaw zawartość strony (bez skryptów) do "panel_body"
+            popupOutput.innerHTML = parsedDocument.body.innerHTML;
+
+            // Przechodź przez znalezione skrypty i wykonuj je
+            const scripts = parsedDocument.querySelectorAll("script");
+            scripts.forEach(script => {
+                const scriptElement = document.createElement("script");
+                scriptElement.textContent = script.textContent;
+                document.body.appendChild(scriptElement);
+            });
+            });
+            
+    }
+    </script>

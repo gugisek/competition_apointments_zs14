@@ -158,3 +158,50 @@ input[type="checkbox"]::before:focus {
   outline: none;
   --tw-ring-inset: inset;
 }
+
+.select2 {
+  width: 100% !important;
+  border-radius: 50px !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+  background-color: #0e0e0e !important;
+  border: 1px solid #3d3d3d !important;
+  border-radius: 7px !important;
+}
+
+.select2-selection__choice {
+  background-color: #1c1c1c !important;
+  border: 0px solid #3d3d3d !important;
+  font-size: small !important;
+}
+
+.select2-selection__choice__remove {
+  border-right: 1px solid #3d3d3d !important;
+}
+
+.select2-dropdown {
+  background-color: #0e0e0e !important;
+  color: white !important;
+  font-size: small !important;
+  border: 1px solid #3d3d3d !important;
+  border-radius: 7px !important;
+}
+
+.select2-results__option--highlighted {
+  background-color: #1c1c1c !important;
+}
+
+.select2-results__option--selected {
+  background-color: #1c1c1c !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Odwrócenie kolorów dla ikony */
+  color: red; /* Dostosowanie koloru ikony */
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Odwrócenie kolorów dla ikony */
+  color: red; /* Dostosowanie koloru ikony */
+}

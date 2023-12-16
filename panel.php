@@ -40,6 +40,7 @@
                 </div>
                 </div>
             </section>
+            
             <script>
                 function popupProfileOpenClose() {
                 var popup = document.getElementById("popupProfile")

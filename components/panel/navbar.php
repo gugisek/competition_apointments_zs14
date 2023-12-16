@@ -213,9 +213,20 @@ while ($row = $result->fetch_assoc()) {
                       Korepetycje
                   </a>
                 </li>
+                <li onclick="mobileClose()" data-aos="fade-right" data-aos-delay="300">
+                  <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
+                  <a id="nau_archiwum" onclick="forOpen(`components/panel/nau_archwium.php`)" class="active:scale-95 duration-150 sidenav-button text-gray-400 hover:bg-[#3d3d3d] hover:text-white duration-150 cursor-pointer group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                    </svg>
+
+
+                      Archiwum
+                  </a>
+                </li>
                 <li onclick="mobileClose()" data-aos="fade-right" data-aos-delay="400">
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
-                  <a id="invite" onclick="hujwiejakafunkcja()" class="active:scale-95 duration-150 text-gray-400 hover:bg-[#3d3d3d] hover:text-white duration-150 cursor-pointer group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                  <a id="invite" onclick="navopenPopupAddKorepetycje()" class="active:scale-95 duration-150 text-gray-400 hover:bg-[#3d3d3d] hover:text-white duration-150 cursor-pointer group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                     </svg>
@@ -298,6 +309,42 @@ while ($row = $result->fetch_assoc()) {
       </nav>
     </div>
 
+ <script>
+    function navpopupAddKorepetycjeOpenClose() {
+       var popup = document.getElementById("navpopupAddKorepetycje")
+        var popupBg = document.getElementById("navpopupAddKorepetycjeBg")
+        popupBg.classList.toggle("opacity-0")
+        popupBg.classList.toggle("h-0")
+       popup.classList.toggle("scale-0")
+       popup.classList.add("duration-200")
+
+    }
+    function navopenPopupAddKorepetycje() {
+        var popupOutput = document.getElementById("navpupupAddKorepetycjeOutput");
+        popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
+        navpopupAddKorepetycjeOpenClose()
+        const url = "components/panel/nau_korepetycje_popup_add.php";
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+            const parser = new DOMParser();
+            const parsedDocument = parser.parseFromString(data, "text/html");
+
+            // Wstaw zawartość strony (bez skryptów) do "panel_body"
+            popupOutput.innerHTML = parsedDocument.body.innerHTML;
+
+            // Przechodź przez znalezione skrypty i wykonuj je
+            const scripts = parsedDocument.querySelectorAll("script");
+            scripts.forEach(script => {
+                const scriptElement = document.createElement("script");
+                scriptElement.textContent = script.textContent;
+                document.body.appendChild(scriptElement);
+            });
+            });
+            
+    }
+    </script>
+ 
     <script>
       function profileInfo(where){
         const hover_profile_info = document.querySelectorAll('#hover_profile_info_'+where);

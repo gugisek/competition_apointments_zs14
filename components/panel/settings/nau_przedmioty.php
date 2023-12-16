@@ -32,7 +32,7 @@ include "../../../scripts/security.php";
       while($row = mysqli_fetch_assoc($result)) {
         
         echo '<li class="w-full">
-        <div class="py-4 w-full flex items-center justify-between">
+        <label for="przedmiot_'.$row['przedmiot_id'].'" class="hover:bg-[#1c1c1c]/30 duration-150 active:scale-[0.98] transition-all py-4 w-full flex items-center justify-between">
           <div class="flex flex-row w-full items-center gap-4 text-gray-300 capitalize leading-3">
             <p>
               '.$row['name'].'
@@ -41,7 +41,7 @@ include "../../../scripts/security.php";
           </div>
           <p class="flex-none sm:ml-6">
           <p onclick="" class="hover:text-red-500 duration-150 transition-all cursor-pointer flex-none ml-6">
-            <input name="selected_przedmioty[]" ';
+            <input id="przedmiot_'.$row['przedmiot_id'].'" name="selected_przedmioty[]" ';
             if($sa == true){
               if(in_array($row['przedmiot_id'], $selected_przedmioty)){
                 echo 'checked';
@@ -50,7 +50,7 @@ include "../../../scripts/security.php";
             echo ' value="'.$row['przedmiot_id'].'" class="mt-1" type="checkbox">
           </p>
           </p>
-        </div>
+        </label>
       </li>
       ';
         }

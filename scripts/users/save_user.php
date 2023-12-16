@@ -298,7 +298,7 @@ if($id != "" && $name != "" && $sur_name != "" && $mail != "" && $role != "" && 
         }
     }
 }else{
-    $$_SESSION['alert'] = 'Nie wprowadzono wszystkich danych';
+    $_SESSION['alert'] = 'Nie wprowadzono wszystkich danych';
     $_SESSION['alert_type'] = 'error';
 }
 header("Location: ../../panel.php");
