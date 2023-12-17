@@ -1,10 +1,11 @@
 
 <?php
   include "scripts/database/conn_db.php";
-  $sql = "SELECT background_picture FROM users WHERE users.id = '$_SESSION[login_id]';";
+  $sql = "SELECT background_picture, role_id FROM users WHERE users.id = '$_SESSION[login_id]';";
   $result = $conn->query($sql);
   while ($row = $result->fetch_assoc()) {
     $background_picture = $row['background_picture'];
+    $role_id = $row['role_id'];
   }
   if ($background_picture == "") {
     $background_picture = "style='background-color:#0e0e0e;'";
@@ -46,11 +47,65 @@
   </div>
 </div>
 
+    <section id="popupAddKorepetycjeBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
+  <section id="popupAddKorepetycje" onclick="popupAddKorepetycjeCloseConfirm()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
+    <div class="flex items-center justify-center w-full h-full px-2">
+      <div onclick="event.cancelBubble=true;" class="bg-[#0e0e0e] md:min-w-[800px] md:w-auto w-full max-w-[800px] max-h-[80vh] overflow-y-auto flex md:flex-row flex-col gap-4 rounded-2xl sm:px-6  -xl">
+        <div id="popupItself" class="flex h-auto w-full justify-between flex-col">
+            <div id="pupupAddKorepetycjeOutput"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function popupAddKorepetycjeOpenClose() {
+       var popup = document.getElementById("popupAddKorepetycje")
+       var popupBg = document.getElementById("popupAddKorepetycjeBg")
+       popupBg.classList.toggle("opacity-0")
+       popupBg.classList.toggle("h-0")
+       popup.classList.toggle("scale-0")
+       popup.classList.add("duration-200")
+
+    }
+    </script>
+  <?php
+  if($role_id == 3){
+    echo '
+     <script>
+      function openPopupAddKorepetycje() {
+            var popupOutput = document.getElementById("pupupAddKorepetycjeOutput");
+            popupOutput.innerHTML = "<div class=`w-full flex items-center justify-center z-[999]`><div class=`z-[30] bg-black/90 p-4 rounded-xl`><div class=`lds-dual-ring`></div></div></div>";
+            popupAddKorepetycjeOpenClose()
+            const url = "components/panel/nau_korepetycje_popup_add.php";
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                const parser = new DOMParser();
+                const parsedDocument = parser.parseFromString(data, "text/html");
+
+                // Wstaw zawartość strony (bez skryptów) do "panel_body"
+                popupOutput.innerHTML = parsedDocument.body.innerHTML;
+
+                // Przechodź przez znalezione skrypty i wykonuj je
+                const scripts = parsedDocument.querySelectorAll("script");
+                scripts.forEach(script => {
+                    const scriptElement = document.createElement("script");
+                    scriptElement.textContent = script.textContent;
+                    document.body.appendChild(scriptElement);
+                });
+                });
+                
+        }
+    </script>
+    ';
+  }
+  ?>
+ 
 <script>
   var EventTempSettings = {};
   //skrypt otwiera podstrony panelu
 function forOpen(site) {
-  var removeButtons = document.querySelectorAll("#dashboard");
+  var removeButtons = document.querySelectorAll(".dashboard");
     for (var i = 0; i < removeButtons.length; i++) {
       removeButtons[i].classList.remove("sidenav-button-active");
     }

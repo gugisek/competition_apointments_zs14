@@ -27,12 +27,36 @@ if(mysqli_num_rows($result) > 0)
         $_SESSION['account_type'] = $row['role_id'];
         $_SESSION['account_type_name'] = $row['role'];
         $_SESSION['account_status'] = $row['status_id'];
+        
+        if($row['role_id'] == 1){
         echo '
         <script>
-        localStorage.setItem("panelPage", "components/panel/dashboard.php");
+        localStorage.setItem("panelPage", "components/panel/dashboard_admin.php");
         window.location.href = "../../panel.php";
         </script>
         ';
+        }elseif($row['role_id'] == 2){
+            echo '
+        <script>
+        localStorage.setItem("panelPage", "components/panel/adm_dashboard.php");
+        window.location.href = "../../panel.php";
+        </script>
+        ';
+        }elseif($row['role_id'] == 3){
+            echo '
+        <script>
+        localStorage.setItem("panelPage", "components/panel/nau_dashboard.php");
+        window.location.href = "../../panel.php";
+        </script>
+        ';
+        }elseif($row['role_id'] == 4){
+            echo '
+        <script>
+        localStorage.setItem("panelPage", "components/panel/ucz_dashboard.php");
+        window.location.href = "../../panel.php";
+        </script>
+        ';
+        }
         
     }
     else

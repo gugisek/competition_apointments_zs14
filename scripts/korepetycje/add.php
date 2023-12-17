@@ -20,7 +20,7 @@ $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $school_id = $row['school_id'];
 
-if($przedmiot_id != "" || $class_id != "" || $max_users != "" || $build_id != "" || $sale_id != "" || $time_od != "" || $time_do != "" || $date != "" || $repeat != ""){
+if($przedmiot_id != "" && $class_id != "" && $max_users != "" && $build_id != "" && $sale_id != "" && $time_od != "" && $time_do != "" && $date != "" && $repeat != ""){
     if($time_od < $time_do){
         $time = "od $time_od do $time_do";
         while($repeat >= 1){
@@ -30,7 +30,7 @@ if($przedmiot_id != "" || $class_id != "" || $max_users != "" || $build_id != ""
             $repeat--;
             //log
                     $before = "";
-                    $after = "Przedmiot: $przedmiot_id, Creator: $creator_id, Max users: $max_users, Godzina: $time, Data: $date, Status: 1, Destiny: $class_id, Room: $sale_id, School: $school_id";
+                    $after = "Przedmiot: $przedmiot_id <br/> Creator: $creator_id <br/> Max users: $max_users <br/> Godzina: $time <br/> Data: $date <br/> Status: 1 <br/> Destiny: $class_id <br/> Room: $sale_id <br/> School: $school_id";
                     $object_id=$id;
                     $object_type="korepetycje";
                     $action_type="2";

@@ -1,4 +1,9 @@
-<?php include "../../scripts/security.php"; ?>
+<?php include "../../scripts/security.php";
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+?>
 
 <section class="overflow-x-auto w-full py-8" data-aos="fade-right" data-aos-delay="100">
 <div class="px-4 sm:px-6 lg:px-8">

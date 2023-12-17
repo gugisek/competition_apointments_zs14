@@ -1,7 +1,7 @@
 <?php
 include '../../scripts/security.php';
 $id = $_GET['id'];
-$sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.korepetycje_id = $id group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+$sql = "SELECT korepetycje.korepetycje_id as 'id', users.profile_picture as 'profilowe', zapisy_korepetycje.powod, przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, zapisy_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie', korepetycje_status.name as 'status_k' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id left join zapisy_status on zapisy_status.status_id=zapisy_korepetycje.status_id where korepetycje.korepetycje_id = $id group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
 include '../../scripts/database/conn_db.php';
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -14,6 +14,9 @@ if($row['dla'] != 'wszyscy'){
         $destiny .= "$row2[name] ";
     }
 }
+if($row['profilowe'] == ''){
+                                $row['profilowe'] = 'default.png';
+                            }
 $przedmiot = $row['przedmiot'];
 $nauczyciel = $row['nauczyciel'];
 $godzina = $row['godzina'];
@@ -64,32 +67,39 @@ $status = $row['status'];
 
 
 ?>
-<form action="scripts/korepetycje/add.php" method="POST" class="text-white flex flex-col h-full px-2 pb-8" enctype="multipart/form-data">
+<div class="text-white flex flex-col h-full px-2 pb-8" enctype="multipart/form-data">
     <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
        <div class="py-6">
             <div class="flex items-center gap-x-3">
                     <div class="flex-none rounded-full p-1 
                     <?php
-                    if($row['status'] == 'odwołane'){
+                    if($row['status_k'] == 'odwołane'){
                         echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
                     }else{
-                        if($row['uczniowie'] >= $row['max_users']){
-                        echo 'text-red-400 bg-red-400/10 ring-red-400/20';
-                        }elseif($row['uczniowie'] >= $row['max_users'] * 0.75){
+                    if($row['status'] == 'odwołany'){
+                        echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
+                    }else{
+                        if($row['status'] == 'wyrzucony'){
                         echo 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/20';
                         }else{
                             echo 'text-green-400 bg-green-400/10 ring-green-400/20';
                         }
                     }
+                }
                     ?>
                     ">
                         <div class="h-2 w-2 rounded-full bg-current"></div>
                     </div>
                     <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
-                        <a class="flex gap-x-2">
-                        <span class="truncate capitalize"><?=$row['przedmiot']?></span>
+                        <a class="flex gap-x-2 items-center">
+                        <img src="public/img/users/<?=$row['profilowe']?>" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
+                        <span class="truncate capitalize">
+                        <?=$row['przedmiot']?></span>
                         <span class="text-gray-400">/</span>
-                        <span class="whitespace-nowrap"><?=$destiny?></span>
+                        <span class="whitespace-nowrap capitalize"><?=$row['nauczyciel']?></span>
+                        <span class="text-gray-400">/</span>
+                        <span class="whitespace-nowrap"><?=$row['powod']?></span>
+
                         </a>
                     </h2>
                     
@@ -110,38 +120,65 @@ $status = $row['status'];
                     <p class="capitalize"><?=$dzienTygodniaPl.', '.$dzien.' '.$miesiacPl?></p>
             </div>
        </div>
-      <div class="text-center flex items-start h-full py-6">
-            <button type="button" onclick="popupEditKorepetycje()" class="flex items-center rounded-md gap-2 text-blue-500 hover:text-blue-700 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
-              <span class="text-xs uppercase">Edytuj</span>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-              </svg>
-
-            </button>
-            <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
-              <span class="sr-only">Zamknij</span>
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-        </div>
+      <?php
+        if($row['status'] == 'odwołany'){
+            echo '
+            <form method="POST" action="scripts/korepetycje/wpisz_sie.php" class="text-center flex items-start h-full py-6">
+                <button class="flex items-center rounded-md gap-2 text-blue-500 hover:text-blue-700 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <input type="hidden" name="korepetycja" value="'.$id.'">
+                    <span class="text-xs uppercase">Wpisz się</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+                </button>
+                <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <span class="sr-only">Zamknij</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                </button>
+            </form>
+            ';
+        }elseif($row['status'] == 'zapisany'){
+            echo '
+            <form method="POST" action="scripts/korepetycje/wypisz_sie.php" class="text-center flex items-start h-full py-6">
+                <button class="flex items-center rounded-md gap-2 text-red-500 hover:text-red-700 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <input type="hidden" name="korepetycja" value="'.$id.'">
+                    <span class="text-xs uppercase">Wypisz się</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+                </button>
+                <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <span class="sr-only">Zamknij</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                </button>
+            </form>
+            ';
+        }else{
+            echo '
+                <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <span class="sr-only">Zamknij</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                </button>
+            ';
+        }
+      ?>
         
     </div>
     <div class="border-b border-[#1c1c1c] text-gray-500 text-xs py-2 text-center items-center justify-between">
-            <p class="flex items-center justify-center gap-1 py-5">
+            <p class="flex items-center justify-center gap-1 py-5 capitalize">
                 <?php
-                    if($row['status'] == 'odwołane'){
-                        echo 'Odwołane';
-                    }else{
-                        if($row['uczniowie'] >= $row['max_users']){
-                        echo 'Zapełnione';
-                        }elseif($row['uczniowie'] >= $row['max_users'] * 0.60){
-                        echo 'Ostatnie miejsca';
-                        }else{
-                            echo 'Zapisani uczniowie';
-                        }
-                    }
-                ?>
+                if($row['status_k'] == 'odwołane'){
+                echo 'Zajęcia odwołane przez nauczyciela';
+              }else{
+                echo $row['status'];
+              }
+              ?>
            <?=$row['uczniowie']?>/<?=$row['max_users']?>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
@@ -168,11 +205,10 @@ $status = $row['status'];
                     <td class=" flex flex-row w-full items-center gap-4 text-gray-300 capitalize leading-3">
                         <img src="public/img/users/'.$row['profile_picture'].'" class="w-10 h-10 rounded-full object-cover" alt="">
                         <p class="text-sm">
-                        '.$row['imie'].' '.$row['sur_name'].'
+                        '.$row['imie'].'
                         <br>
                         <span class="text-xs text-gray-500 capitalize">'.$row['class'].' '.$row['profile'].'</span>
                         </p>
-                        <span class="text-xs text-gray-500 md:ml-4">'.$row['powod'].'</span>
                     </td>
                     <td class="min-w-[80px] text-xs text-gray-500">
                     '.$row['kiedy'].'
@@ -190,20 +226,7 @@ $status = $row['status'];
                     echo ' flex items-center grayscale-0">'.$row['name'].'</span>
                     </td>
                     ';
-                    if($row['name'] == 'zapisany'){
-                        echo '<td onclick="kick_user('.$row['id'].')" class="flex text-xs text-gray-500 hover:text-red-600 trnasition-all duration-150 cursor-pointer text-right pl-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
-                        </svg>
-                    </td>';
-                    }elseif($row['name'] == 'wyrzucony'){
-                        echo '<td onclick="un_kick_user('.$row['id'].')" class="flex text-xs text-gray-500 hover:text-red-600 trnasition-all duration-150 cursor-pointer text-right pl-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                        </svg>
-
-                    </td>';
-                    }
+                    
                     echo '
                 </tr>
                 ';
@@ -213,7 +236,7 @@ $status = $row['status'];
             }
             ?>
     </table>
-</form>
+</div>
  <section id="popupKickBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
   <section id="popupKick" onclick="popupKickOpenClose()" class="z-[70] fixed scale-0 top-0 left-0 w-full h-full">
     <div class="flex items-center justify-center w-full h-full px-2">

@@ -1,20 +1,24 @@
 <?php
 include '../../scripts/security.php';
+if($_SESSION['account_type'] != '4'){
+    header('Location: ../../404.php');
+    exit();
+}
 include '../../scripts/database/conn_db.php';
 $login_id = $_SESSION['login_id'];
 $sql = "SELECT school_id FROM `users` where users.id='$login_id';";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $school_id = $row['school_id'];
-$sql = 'select count(korepetycje_id) as "all" from korepetycje where school_id='.$school_id.';';
+$sql = 'select count(korepetycje_id) as "all" from korepetycje where school_id='.$school_id.' and year(data)=year(now());';
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $all = $row['all'];
-$sql = "select count(korepetycje_id) as 'all_yours' from korepetycje where creator_id=$login_id and month(data)=month(now());";
+$sql = "SELECT count(zapis_id) as 'zapisy' FROM `zapisy_korepetycje` where users_id=$login_id and month(kiedy)=month(now()) and year(kiedy)=year(now());";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
-$all_yours = $row['all_yours'];
-$sql = "select count(zapisy_korepetycje.zapis_id) as 'l_uczniow' from korepetycje JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where month(data)=month(now()) and creator_id=$login_id;";
+$all_yours = $row['zapisy'];
+$sql = "select count(zapisy_korepetycje.zapis_id) as 'l_uczniow' from korepetycje JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where month(data)=month(now()) and year(data)=year(now()) and school_id=$school_id;";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $l_uczniow = $row['l_uczniow'];
@@ -30,7 +34,7 @@ while($row = mysqli_fetch_assoc($result)){
 }
 $uczniow = implode(',', $uczniow);
 
-$sql = "SELECT count(zapisy_korepetycje.zapis_id) as 'uczniow', month(data) as 'miesiac' from korepetycje JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where year(data)=year(now()) and creator_id=$login_id group by month(data);";
+$sql = "SELECT count(zapisy_korepetycje.zapis_id) as 'uczniow', month(data) as 'miesiac' from korepetycje JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where year(data)=year(now()) and zapisy_korepetycje.users_id=$login_id group by month(data);";
 
 $result = mysqli_query($conn, $sql);
 $twoi_uczniowie = array();
@@ -50,7 +54,7 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
                 <div class="flex items-baseline text-2xl font-semibold theme-text">
                 <?=$all?>
-                <span class="ml-2 text-sm font-medium text-gray-500">w tym roku</span>
+                <span class="ml-2 text-sm font-medium text-gray-500">w tym roku w Twojej szkole</span>
                 </div>
             </dd>
             </div>
@@ -65,11 +69,11 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
             </dd>
             </div>
             <div data-aos="fade-up" data-aos-delay="500" class="px-4 py-5 sm:p-6">
-            <dt class="text-base font-normal text-gray-300">Uczniów na Twoich zajęciach</dt>
+            <dt class="text-base font-normal text-gray-300">Uczniów na zajęciach</dt>
             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
                 <div class="flex items-baseline text-2xl font-semibold theme-text">
                 <?=$l_uczniow?>
-                <span class="ml-2 text-sm font-medium text-gray-500">w tym miesiącu</span>
+                <span class="ml-2 text-sm font-medium text-gray-500">w tym miesiącu w Twojej szkole</span>
                 </div>
 
             </dd>
@@ -87,12 +91,12 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                             labels: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Pażdziernik', 'Listopad', 'Grudzień'],
                             datasets: [
                                 {
-                                    label: 'Uczniów na korepetycjach',
+                                    label: 'Korepetycje w Twojej szkole',
                                     backgroundColor: '#c179f0aa',
                                     borderColor: '#9233d1',
                                     data: [<?=$uczniow?>]
                                 }, {
-                                    label: 'Uczniowie na Twoich korepetycjach',
+                                    label: 'Twoje korepetycje',
                                     backgroundColor: '#9d9d9d',
                                     borderColor: '#3d3d3d',
                                     data: [<?=$twoi_uczniowie?>]
@@ -121,16 +125,19 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                 </script>
             </div>
             <div class="md:order-none order-first">
-                 <header data-aos="fade-left" data-aos-delay="500" class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+                 <header class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
                     <h2 class="text-base font-medium leading-7 text-gray-100">Twoje korepetycje</h2>
-                    <a onclick="forOpen(`components/panel/nau_korepetycje.php`)" class="cursor-pointer text-sm font-semibold leading-6 theme-text theme-text-hover duration-150 transition-all">Wszystkie</a>
+                    <a onclick="forOpen(`components/panel/ucz_korepetycje.php`)" class="cursor-pointer text-sm font-semibold leading-6 theme-text theme-text-hover duration-150 transition-all">Wszystkie</a>
                 </header>
-                <ul data-aos="fade-left" data-aos-delay="600" role="list" class="divide-y divide-white/5">
+                <ul role="list" class="divide-y divide-white/5">
                     <?php
-                        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+                        $sql = "SELECT korepetycje.korepetycje_id as 'id', zapisy_korepetycje.powod, przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, destiny, data, zapisy_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id left join zapisy_status on zapisy_status.status_id = zapisy_korepetycje.status_id where zapisy_korepetycje.users_id = '$login_id' and korepetycje.data >= CURDATE() and zapisy_korepetycje.status_id=1 group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
                         $result = mysqli_query($conn, $sql);
                         $is = false;
                         while($row = mysqli_fetch_assoc($result)){
+                            if($row['profilowe'] == ''){
+                                $row['profilowe'] = 'default.png';
+                            }
                             $destiny = $row['dla'];
                             if($row['dla'] != 'wszyscy'){
                             $destiny = '';
@@ -194,7 +201,7 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                                         <img src="public/img/users/'.$row['profilowe'].'" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
                                         <h3 class="capitalize flex-auto truncate text-sm font-medium leading-3 text-gray-200">
                                         '.$row['przedmiot'].'</br>
-                                        <span class="text-xs lowercase font-normal text-gray-500">'.$destiny.'</span>
+                                        <span class="text-xs lowercase font-normal text-gray-500 capitalize">'.$row['nauczyciel'].'</span>
                                         </h3>
                                         <time datetime="2023-01-23T11:00" class="flex-none text-xs text-gray-500">'.$row['godzina'].'</time>
                                     </div>
@@ -212,7 +219,7 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                             ';
                         }
                         if($is == false){
-                            echo '<p data-aos="fade-left" data-aos-delay="500" class="text-center text-gray-500 py-8">Nie masz żadnych nadchodzących korepetycji</p>';
+                            echo '<p class="text-center text-gray-500 py-8">Nie masz żadnych nadchodzących korepetycji</p>';
                         }
                     ?>
                     <!-- More items... -->
@@ -248,7 +255,7 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
         var popupOutput = document.getElementById("pupupInfoKorepetycjeOutput");
         popupOutput.innerHTML = "<div class='w-full flex items-center justify-center z-[999]'><div class='z-[30] bg-black/90 p-4 rounded-xl'><div class='lds-dual-ring'></div></div></div>";
         popupInfoKorepetycjeOpenClose()
-        const url = "components/panel/nau_korepetycje_popup_info.php?id="+id;
+        const url = "components/panel/ucz_korepetycje_popup_info.php?id="+id;
         fetch(url)
             .then(response => response.text())
             .then(data => {

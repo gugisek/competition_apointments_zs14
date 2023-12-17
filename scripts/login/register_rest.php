@@ -49,6 +49,36 @@ if ($name != '' && $sur_name != '' && $class_id !='' && $code !='') {
             $_SESSION['alert'] = 'Zweryfikowano pomyślnie.';
             $_SESSION['alert_type'] = 'success';
 
+            if($row['role_id'] == 1){
+            echo '
+            <script>
+            localStorage.setItem("panelPage", "components/panel/dashboard_admin.php");
+            window.location.href = "../../panel.php";
+            </script>
+            ';
+            }elseif($row['role_id'] == 2){
+                echo '
+            <script>
+            localStorage.setItem("panelPage", "components/panel/adm_dashboard.php");
+            window.location.href = "../../panel.php";
+            </script>
+            ';
+            }elseif($row['role_id'] == 3){
+                echo '
+            <script>
+            localStorage.setItem("panelPage", "components/panel/nau_dashboard.php");
+            window.location.href = "../../panel.php";
+            </script>
+            ';
+            }elseif($row['role_id'] == 4){
+                echo '
+            <script>
+            localStorage.setItem("panelPage", "components/panel/ucz_dashboard.php");
+            window.location.href = "../../panel.php";
+            </script>
+            ';
+            }
+
             $_SESSION['user'] = $name.' '.$sur_name;
             $_SESSION['account_status'] = 1;
             

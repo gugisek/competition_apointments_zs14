@@ -58,7 +58,7 @@
 }
 
 .theme-border {
-  border-color: var(--text);
+  border-color: var(--text) !important;
 }
 
 .theme-border-focus:focus {
@@ -204,4 +204,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Odwrócenie kolorów dla ikony */
   color: red; /* Dostosowanie koloru ikony */
+}
+
+input[type="radio"]:checked + label {
+  border-color: var(--text) !important;
 }

@@ -10,7 +10,7 @@ if($user_id != "" && $korepetycje_id != "") {
         $result = mysqli_query($conn, $sql);
         //log
                 $before = "";
-                $after = "Status: 3<br/>, User: $user_id, Korepetycje: $korepetycje_id";
+                $after = "Status: 3<br/> User: $user_id <br/> Korepetycje: $korepetycje_id";
                 $object_id=$korepetycje_id;
                 $object_type="korepetycje";
                 $action_type="1";
@@ -24,7 +24,7 @@ if($user_id != "" && $korepetycje_id != "") {
         $result = mysqli_query($conn, $sql);
         //log
                 $before = "";
-                $after = "Status: 1<br/>, User: $user_id, Korepetycje: $korepetycje_id";
+                $after = "Status: 1<br/> User: $user_id <br/> Korepetycje: $korepetycje_id";
                 $object_id=$korepetycje_id;
                 $object_type="korepetycje";
                 $action_type="1";

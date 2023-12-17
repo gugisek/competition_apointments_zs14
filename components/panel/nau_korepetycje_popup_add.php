@@ -10,7 +10,7 @@ $school_id = $row['school_id'];
 <form action="scripts/korepetycje/add.php" method="POST" class="text-white flex flex-col h-full gap-4 px-2 pb-8" enctype="multipart/form-data">
     <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
       <h1 class="font-medium py-6">
-        Dodaj korepetcję
+        Dodaj korepetycję
       </h1>
       <div class="text-center flex items-center">
             <button class="flex items-center rounded-md text-green-500 hover:text-green-700 px-4 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
@@ -40,8 +40,13 @@ $school_id = $row['school_id'];
                           <?php
                           $sql = "SELECT przedmioty.name, przedmioty.przedmiot_id FROM `selected_przedmioty` join przedmioty on przedmioty.przedmiot_id=selected_przedmioty.przedmiot_id where user_id = $_SESSION[login_id] order by przedmioty.name asc;";
                           $result = mysqli_query($conn, $sql);
+                          $is2 = false;
                           while($row = mysqli_fetch_assoc($result)) {
+                            $is2 = true;
                             echo '<option value="'.$row['przedmiot_id'].'" class="capitalize">'.$row['name'].'</option>';
+                          }
+                          if($is2 == false){
+                            echo '<option value="" class="" selected>Dodaj przedmioty w ustawieniach</option>';
                           }
                           ?>
                 </select>
@@ -125,7 +130,7 @@ $school_id = $row['school_id'];
                     </div>
                     <p class="col-span-1 flex items-end h-full text-xs text-gray-600 pb-2">Domyślnie 1 oznacza tylko pojedyńczą korepetycję.</p>
        </div>
-       <p class="border-b border-[#1c1c1c] text-gray-500 text-xs py-2 mb-2 mt-2">
+       <!-- <p class="border-b border-[#1c1c1c] text-gray-500 text-xs py-2 mb-2 mt-2">
             Zakończenie zapisów
         </p>
        <div class="grid md:grid-cols-2 gap-4">
@@ -138,7 +143,7 @@ $school_id = $row['school_id'];
                     <dt class="text-sm font-medium leading-6 text-gray-300">Dzień</dt>
                     <input name="zapisy_date_end" required type="date" value="" placeholder="" class="w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
                 </div>
-       </div>
+       </div> -->
     </dl>
 </form>
 

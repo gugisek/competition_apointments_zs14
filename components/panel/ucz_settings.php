@@ -1,10 +1,3 @@
-<?php
-session_start();
-if($_SESSION['account_type'] != '1'){
-    header('Location: ../../404.php');
-    exit();
-}
-?>
 <section data-aos="fade-right" data-aos-delay="100">
     <main>
       <header class=" border-b border-white/5">
@@ -14,13 +7,6 @@ if($_SESSION['account_type'] != '1'){
             <li class="active:scale-95 duration-150">
               <a onclick="forOpenSettings('components/panel/settings/about.php')" id="about" class="cursor-pointer settingsnav-buttons theme-text-hover duration-150">Informacje o stronie</a>
             </li>
-            <li class="active:scale-95 duration-150">
-              <a onclick="forOpenSettings('components/panel/settings/log.php')" id="log" class="cursor-pointer settingsnav-buttons theme-text-hover duration-150">Historia zmian</a>
-            </li>
-            <li class="active:scale-95 duration-150">
-              <a onclick="forOpenSettings('components/panel/settings/faq.php')" id="faq" class="cursor-pointer settingsnav-buttons theme-text-hover duration-150">Faq</a>
-            </li>
-            
           </ul>
         </nav>
       </header>

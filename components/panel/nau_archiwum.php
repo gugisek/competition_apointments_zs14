@@ -1,16 +1,17 @@
 <?php
-include '../../scripts/security.php';
+session_start();
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
 ?>
 <main data-aos="fade-right" data-aos-delay="100" class="">
       <header class="flex items-center justify-between border-b border-white/5 px-4 sm:px-6 lg:px-8">
             <div class="w-full px-4 mb-6 sm:px-0 mt-6 flex md:flex-row flex-col justify-between items-center">
                 <div>
-                    <h3 class="text-base font-semibold leading-7 text-white">Korepetycje</h3>
-                    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Twórz i zarządzaj swoimi korepetycjami, pamiętaj starsze niż dzień nie są wyświetlane.</p>
+                    <h3 class="text-base font-semibold leading-7 text-white">Archiwalne korepetycje</h3>
+                    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-400">Zobacz swoje wszystkie korepetycje, które już się odbyły.</p>
                 </div>
-                <button type="button" onclick="openPopupAddKorepetycje()" class="active:scale-95 duration-150 md:mt-0 mt-4 inline-flex items-center gap-x-2 rounded-md theme-bg theme-bg-hover px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Utwórz korepetycje
-                </button>
             </div>
       </header>
       <!-- Deployment list -->
@@ -18,7 +19,7 @@ include '../../scripts/security.php';
         <?php
         include "../../scripts/database/conn_db.php";
         $login_id = $_SESSION['login_id'];
-        $sql = "SELECT korepetycje.korepetycje_id as 'id', SUBSTRING_INDEX(SUBSTRING_INDEX(godzina, ' do ', 1), ' ', -1) AS time_od, SUBSTRING_INDEX(godzina, ' do ', -1) AS time_do, przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data < CURDATE() group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
         $result = mysqli_query($conn, $sql);
         $is = false;
         while($row = mysqli_fetch_assoc($result)){
@@ -72,10 +73,6 @@ include '../../scripts/security.php';
             $dzienTygodniaPl = $dzienTygodniaPl[$dzienTygodnia];
             $miesiacPl = $miesiacePl[$miesiac];
 
-            $startDate = date('Ymd', strtotime($row['data'])) . 'T' . date('His', strtotime($row['time_od']));
-            $endDate = date('Ymd', strtotime($row['data'])) . 'T' . date('His', strtotime($row['time_do']));
-
-
             echo '
             <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="hover:bg-[#3d3d3d]/70 transition-all duration-150 cursor-pointer relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
           <div class="min-w-0 flex-auto">
@@ -85,11 +82,11 @@ include '../../scripts/security.php';
                 echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
               }else{
                 if($row['uczniowie'] >= $row['max_users']){
-                  echo 'text-red-400 bg-red-400/10 ring-red-400/20';
+                  echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
                 }elseif($row['uczniowie'] >= $row['max_users'] * 0.65){
-                  echo 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/20';
+                  echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
                 }else{
-                    echo 'text-green-400 bg-green-400/10 ring-green-400/20';
+                    echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
                 }
               }
               echo ' ">
@@ -100,6 +97,7 @@ include '../../scripts/security.php';
                   <span class="truncate capitalize">'.$row['przedmiot'].'</span>
                   <span class="text-gray-400">/</span>
                   <span class="whitespace-nowrap">'.$destiny.'</span>
+                  <span class="absolute inset-0"></span>
                 </a>
               </h2>
             </div>
@@ -119,19 +117,16 @@ include '../../scripts/security.php';
                  <p class="capitalize">'.$dzienTygodniaPl.', '.$dzien.' '.$miesiacPl.'</p>
             </div>
           </div>
-          <a onclick="event.cancelBubble=true;" class="hover:scale-105 transition-all duration-150 active:scale-95" href="https://www.google.com/calendar/event?action=TEMPLATE&text=Korepetycja+'.urlencode($row['przedmiot']).'+'.urlencode($row['nauczyciel']).'&details=Korepetycja+z+EduKorepetycje&location=Sala+'.urlencode($row['sala']).'+'.urlencode($row['budynek']).'&dates='.$startDate.'/'.$endDate.'" target="_blank">
-              <img src="public/img/add_to_google.jpg" alt="" class="h-7 w-18 flex-none object-cover rounded-full bg-gray-800">
-          </a>
           <div class="rounded-full flex items-center justify-center gap-2 py-1 px-2 text-xs font-medium ring-1 ring-inset capitalize ';
           if($row['status'] == 'odwołane'){
             echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
           }else{
             if($row['uczniowie'] >= $row['max_users']){
-              echo 'text-red-400 bg-red-400/10 ring-red-400/20';
+              echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
             }elseif($row['uczniowie'] >= $row['max_users'] * 0.65){
-              echo 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/20';
+              echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
             }else{
-                echo 'text-green-400 bg-green-400/10 ring-green-400/20';
+                echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
             }
           }
           echo '">';
@@ -161,14 +156,13 @@ include '../../scripts/security.php';
             ';
         }
         if($is == false){
-            echo '<p class="text-center text-gray-500 py-8">Nie masz żadnych nadchodzących korepetycji</p>';
+            echo '<p class="text-center text-gray-500 py-8">Nie masz żadnych odbytych korepetycji</p>';
         }
         ?>
 
         <!-- More deployments... -->
       </ul>
     </main>
-
       <section id="popupInfoKorepetycjeBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
   <section id="popupInfoKorepetycje" onclick="popupInfoKorepetycjeOpenClose()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">
     <div class="flex items-center justify-center w-full h-full px-2">
@@ -215,4 +209,3 @@ include '../../scripts/security.php';
             });
   }
 </script>
-  

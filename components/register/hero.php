@@ -39,7 +39,7 @@
 
       <div data-aos="fade-right" data-aos-delay="400">
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-white">Rola</label>
+          <label for="password" class="block text-sm font-medium leading-6 text-white">Rola*</label>
         </div>
         <div class="mt-2">
           <select id="role_id" name="role_id" required class="capitalize bg-[#1a1a1a] block w-full rounded-md border-0 px-4 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6">
@@ -53,10 +53,11 @@
             }
             ?>
           </select>
+          <p class="text-xs text-gray-500 mt-2">* wymagany jest kod do weryfikacji wybranej roli, potem jej nie zmienisz :)</p>
         </div>
       </div>
 
-      <div data-aos="fade-right" data-aos-delay="500">
+      <div data-aos="fade-right" data-aos-delay="500" data-aos-anchor-placement="top-bottom">
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm font-medium leading-6 text-white">Hasło</label>
           <div class="text-sm">

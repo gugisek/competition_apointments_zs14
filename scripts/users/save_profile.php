@@ -1,6 +1,6 @@
 <?php
 include "../security.php";
-$id = $_POST['id'];
+$id = $_SESSION['login_id'];
 $name = $_POST['name'];
 $sur_name = $_POST['sur_name'];
 $sec_name = $_POST['sec_name'];
