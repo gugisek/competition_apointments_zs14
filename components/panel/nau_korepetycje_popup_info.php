@@ -65,8 +65,8 @@ $status = $row['status'];
 
 ?>
 <form action="scripts/korepetycje/add.php" method="POST" class="text-white flex flex-col h-full px-2 pb-8" enctype="multipart/form-data">
-    <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
-       <div class="py-6">
+    <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex md:flex-row flex-col-reverse items-center justify-between sm:px-0 px-4 border-b border-white/10">
+       <div class="md:pt-6 pt-0 py-6">
             <div class="flex items-center gap-x-3">
                     <div class="flex-none rounded-full p-1 
                     <?php
@@ -165,8 +165,8 @@ $status = $row['status'];
                         echo 'grayscale cursor-not-allowed';
                     }
                     echo ' hover:bg-[#1c1c1c]/30 duration-150 py-4 w-full flex items-center justify-between">
-                    <td class=" flex flex-row w-full items-center gap-4 text-gray-300 capitalize leading-3">
-                        <img src="public/img/users/'.$row['profile_picture'].'" class="w-10 h-10 rounded-full object-cover" alt="">
+                    <td class=" flex flex-row flex-wrap w-full items-center md:gap-4 gap-2 text-gray-300 capitalize leading-3">
+                        <img src="public/img/users/'.$row['profile_picture'].'" class="w-10 h-10 rounded-full object-cover md:block hidden" alt="">
                         <p class="text-sm">
                         '.$row['imie'].' '.$row['sur_name'].'
                         <br>

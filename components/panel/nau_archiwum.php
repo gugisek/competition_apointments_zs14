@@ -74,7 +74,7 @@ if($_SESSION['account_type'] != '3'){
             $miesiacPl = $miesiacePl[$miesiac];
 
             echo '
-            <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="hover:bg-[#3d3d3d]/70 transition-all duration-150 cursor-pointer relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
+            <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="hover:bg-[#3d3d3d]/70 transition-all duration-150 cursor-pointer relative flex md:flex-row flex-col items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
           <div class="min-w-0 flex-auto">
             <div class="flex items-center gap-x-3">
               <div class="flex-none rounded-full p-1 ';
@@ -93,7 +93,7 @@ if($_SESSION['account_type'] != '3'){
                 <div class="h-2 w-2 rounded-full bg-current"></div>
               </div>
               <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
-                <a class="flex gap-x-2">
+                <a class="flex flex-wrap gap-x-2">
                   <span class="truncate capitalize">'.$row['przedmiot'].'</span>
                   <span class="text-gray-400">/</span>
                   <span class="whitespace-nowrap">'.$destiny.'</span>
@@ -101,7 +101,7 @@ if($_SESSION['account_type'] != '3'){
                 </a>
               </h2>
             </div>
-            <div class="mt-3 flex items-center gap-x-2.5 text-xs leading-5 text-gray-400">
+            <div class="mt-3 flex flex-wrap items-center gap-x-2.5 text-xs leading-5 text-gray-400">
               <p class="truncate">Sala '.$row['sala'].'</p>
               <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
                 <circle cx="1" cy="1" r="1" />
@@ -117,7 +117,7 @@ if($_SESSION['account_type'] != '3'){
                  <p class="capitalize">'.$dzienTygodniaPl.', '.$dzien.' '.$miesiacPl.'</p>
             </div>
           </div>
-          <div class="rounded-full flex items-center justify-center gap-2 py-1 px-2 text-xs font-medium ring-1 ring-inset capitalize ';
+          <div class="rounded-full flex items-center justify-center gap-2 py-1 px-2 text-xs font-medium ring-1 ring-inset capitalize md:mt-0 mt-4 ';
           if($row['status'] == 'odwołane'){
             echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
           }else{
@@ -148,7 +148,7 @@ if($_SESSION['account_type'] != '3'){
             </svg>
            </div>
           </div>
-          <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <svg class="h-5 w-5 flex-none text-gray-400 md:block hidden" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
           </svg>
         </li>

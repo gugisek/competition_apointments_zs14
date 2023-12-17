@@ -124,11 +124,11 @@ $school_id = $row['school_id'];
         </p>
        <div class="gap-4">
 
-                    <div class="col-span-2">
+                    <div class="col-span-2 px-4 py-2 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-300">Powtórz przez liczbę tygodni</dt>
                         <input name="repeat" required type="number" value="1" min="1" max="10" placeholder="" class="text-center w-full text-gray-400 text-sm focus:text-white bg-[#0e0e0e] focus:ring-0 focus:outline-0 border-b border-white/10 py-2 theme-border-focus duration-150"></input>
                     </div>
-                    <p class="col-span-1 flex items-end h-full text-xs text-gray-600 pb-2">Domyślnie 1 oznacza tylko pojedyńczą korepetycję.</p>
+                    <p class="col-span-1 px-4 py-2 sm:px-0 flex items-end h-full text-xs text-gray-600 pb-2">Domyślnie 1 oznacza tylko pojedyńczą korepetycję.</p>
        </div>
        <!-- <p class="border-b border-[#1c1c1c] text-gray-500 text-xs py-2 mb-2 mt-2">
             Zakończenie zapisów

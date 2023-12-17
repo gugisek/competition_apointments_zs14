@@ -69,10 +69,10 @@ $status = $row['status'];
 
 ?>
 <div class="text-white flex flex-col h-full px-2 pb-8" enctype="multipart/form-data">
-    <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">
-       <div class="py-6">
+    <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex md:flex-row flex-col-reverse items-center justify-between sm:px-0 px-4 border-b border-white/10">
+       <div class="md:pt-6 py-6 pt-0">
             <div class="flex items-center gap-x-3">
-                    <div class="flex-none rounded-full p-1 
+                    <div class="flex-none md:block hidden rounded-full p-1 
                     <?php
                     if($row['status_k'] == 'odwołane'){
                         echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
@@ -92,7 +92,7 @@ $status = $row['status'];
                         <div class="h-2 w-2 rounded-full bg-current"></div>
                     </div>
                     <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
-                        <a class="flex gap-x-2 items-center">
+                        <a class="flex gap-x-2 items-center flex-wrap">
                         <img src="public/img/users/<?=$row['profilowe']?>" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
                         <span class="truncate capitalize">
                         <?=$row['przedmiot']?></span>
@@ -161,7 +161,7 @@ $status = $row['status'];
         }else{
             
             echo '
-                <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
+                <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md md:py-0 py-6 text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
                 <span class="sr-only">Zamknij</span>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
