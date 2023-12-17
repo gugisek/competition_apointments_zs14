@@ -1,7 +1,8 @@
 <?php
 include '../../scripts/security.php';
 $id = $_GET['id'];
-$sql = "SELECT korepetycje.korepetycje_id as 'id', users.profile_picture as 'profilowe', zapisy_korepetycje.powod, przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, zapisy_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie', korepetycje_status.name as 'status_k' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id left join zapisy_status on zapisy_status.status_id=zapisy_korepetycje.status_id where korepetycje.korepetycje_id = $id group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+$login = $_SESSION['login_id'];
+$sql = "SELECT korepetycje.korepetycje_id as 'id', users.profile_picture as 'profilowe', zapisy_korepetycje.powod, przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', max_users, godzina, destiny, data, zapisy_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie', korepetycje_status.name as 'status_k' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id left join rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id left join zapisy_status on zapisy_status.status_id=zapisy_korepetycje.status_id where korepetycje.korepetycje_id = $id and zapisy_korepetycje.users_id = $login group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
 include '../../scripts/database/conn_db.php';
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -158,6 +159,7 @@ $status = $row['status'];
             </form>
             ';
         }else{
+            
             echo '
                 <button onclick="popupInfoKorepetycjeOpenClose()" type="button" class="rounded-md text-gray-300 hover:text-gray-500 hover:rotate-90 duration-150 focus:outline-none focus:ring-2 theme-ring-focus focus:ring-offset-2">
                 <span class="sr-only">Zamknij</span>
