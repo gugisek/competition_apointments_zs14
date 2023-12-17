@@ -7,10 +7,16 @@
       </div>
       <div class="mt-10 lg:col-span-7 lg:mt-0">
         <dl class="divide-y divide-white/10">
+          tu błąd poniżej jest
         <?php
         include "scripts/database/conn_db.php";
         $sql = "select * from faq";
         $result = mysqli_query($conn, $sql);
+        if(!$result){
+          echo "Błąd zapytania";
+          echo error_get_last();
+          exit;
+        }
         $i = 1;
         while($row = mysqli_fetch_assoc($result)){
           echo '
