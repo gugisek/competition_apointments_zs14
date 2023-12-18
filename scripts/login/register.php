@@ -9,12 +9,12 @@ $password = hash('sha256', $password);
 
 if ($login != '' && $password != '' && $school_id !='') {
     include '../database/conn_db.php';
-        $sql = "SELECT login, pswd FROM users WHERE login = '".$login."' and pswd = '".$password."'";
+        $sql = "SELECT login, pswd FROM users WHERE login = '".$login."'";
         $result = mysqli_query($conn, $sql);
         if(mysqli_num_rows($result) > 0)
         {
             session_start();
-            $_SESSION['alert'] = 'Konto o już istnieje.';
+            $_SESSION['alert'] = 'Konto o takim mail już istnieje.';
             $_SESSION['alert_type'] = 'error';
             header('Location: ../../panel.php');
         }
