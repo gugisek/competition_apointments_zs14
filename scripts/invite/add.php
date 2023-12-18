@@ -1,7 +1,7 @@
 <?php
 include "../security.php";
 
-if($_SESSION['account_type'] != '2' or $_SESSION['account_type'] != '1'){
+if($_SESSION['account_type'] != '2' and $_SESSION['account_type'] != '1'){
     header('Location: ../../404.php');
     exit();
 }
