@@ -1,5 +1,11 @@
 <?php
 include '../security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $selected_przedmioty = $_POST['selected_przedmioty'];
 if(!empty($_POST['selected_przedmioty'])) {
     $selected_przedmioty = array_map('intval', $selected_przedmioty);

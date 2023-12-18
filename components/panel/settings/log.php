@@ -97,7 +97,7 @@
             }else {
                 $page_id = 1;
             } 
-            include '../../../scripts/conn_db.php';
+            include '../../../scripts/database/conn_db.php';
             $sql = "SELECT count(id) FROM logs";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_row($result);

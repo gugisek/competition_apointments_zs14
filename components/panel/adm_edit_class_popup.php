@@ -1,5 +1,11 @@
 <?php
 include "../../scripts/security.php";
+
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $class_id = $_GET['id'];
 include "../../scripts/database/conn_db.php";
 $sql = "SELECT * FROM `user_class` where class_id='$class_id'";

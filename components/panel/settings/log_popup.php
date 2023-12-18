@@ -78,10 +78,6 @@ else {
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
                         echo $row['name'];
-                    } elseif ($objectType == "zapisy" and $objectId != 0 and $type != 'delete') {$sql = "SELECT question FROM `zapisy` where id='$objectId';"; 
-                        $result = mysqli_query($conn, $sql);
-                        $row = mysqli_fetch_assoc($result);
-                        echo $row['question'];
                     } elseif ($objectType == "faq" and $objectId != 0 and $type != 'delete') {$sql = "SELECT question FROM `faq` where id='$objectId';"; 
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);

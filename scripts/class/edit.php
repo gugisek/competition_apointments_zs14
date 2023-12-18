@@ -1,6 +1,11 @@
 <?php
 include "../security.php";
 
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $name = $_POST['name'];
 $profile = $_POST['profile'];
 $rocznik = $_POST['rocznik'];

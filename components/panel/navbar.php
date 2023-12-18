@@ -325,7 +325,7 @@ while ($row = $result->fetch_assoc()) {
               </section>
               <img class="w-9 rounded-full bg-gray-800 object-cover aspect-square" src="<?=$profile_picture?>" alt="">
               <span class="sr-only">Your profile</span>
-              <span aria-hidden="true" class="text-xs leading-3 capitalize">
+              <span aria-hidden="true" class="text-xs leading-3 capitalize min-w-fit">
                 <?php echo $_SESSION['user']?><br/>
                 <span class="text-xs text-gray-500 font-normal capitalize"><?=$_SESSION['account_type_name']?> <?=$name?></span>
               </span>

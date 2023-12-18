@@ -2,6 +2,11 @@
 include "../../../scripts/security.php";
 include "../../../scripts/database/conn_db.php";
 
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);

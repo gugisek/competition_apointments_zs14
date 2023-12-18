@@ -2,7 +2,7 @@
   <header class="absolute inset-x-0 top-0 z-50">
     <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div class="flex lg:flex-1">
-        <a href="index.php" class="-m-1.5 p-1.5 px-4">
+        <a href="/" class="-m-1.5 p-1.5 px-4">
           <img data-aos="fade-down" data-aos-delay="100" class="h-8 w-auto" src="public/img/logo.png" alt="">
         </a>
       </div>
@@ -20,7 +20,7 @@
         <a data-aos="fade-down" data-aos-delay="500" href="#kontakt" class="flex items-center justify-center"><span class="text-sm font-semibold leading-6 text-white hover:bg-violet-600/30 px-4 py-1 rounded-lg hover:text-violet-500 druation-150 active:scale-95 transition-all">Kontakt</span></a>
       </div>
       <div data-aos="fade-down" data-aos-delay="600" class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="login.php" class="text-sm font-semibold leading-6 text-white hover:bg-violet-600/30 px-4 py-1 rounded-lg hover:text-violet-500 druation-150 active:scale-95 transition-all">Zaloguj się <span aria-hidden="true">&rarr;</span></a>
+        <a href="login" class="text-sm font-semibold leading-6 text-white hover:bg-violet-600/30 px-4 py-1 rounded-lg hover:text-violet-500 druation-150 active:scale-95 transition-all">Zaloguj się <span aria-hidden="true">&rarr;</span></a>
       </div>
     </nav>
     <!-- Mobile menu, show/hide based on menu open state. -->
@@ -29,7 +29,7 @@
       <!-- <div class="fixed inset-0 z-50"></div> -->
       <div id="sidenav_mobile" class="right-[-100%] transition-all duration-150 fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-[#0e0e0e] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
         <div class="flex items-center justify-between">
-          <a href="index.php" class="-m-1.5 p-1.5 px-4">
+          <a href="/" class="-m-1.5 p-1.5 px-4">
           <img data-aos="fade-down" data-aos-delay="100" class="h-8 w-auto" src="public/img/logo_long.png" alt="">
         </a>
           <button onclick="openNavToggle()" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400">
@@ -48,7 +48,7 @@
               <a onclick="openNavToggle()" href="#kontakt" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Kontakt</a>
             </div>
             <div class="py-6">
-              <a href="login.php" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800">Zaloguj się</a>
+              <a href="login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800">Zaloguj się</a>
             </div>
           </div>
         </div>
@@ -66,11 +66,11 @@
           <h1 data-aos="fade-up" data-aos-delay="700" class="text-4xl font-bold tracking-tight text-white sm:text-6xl">Korepetycje z nami to nie problem</h1>
           <p data-aos="fade-up" data-aos-delay="800" class="mt-6 text-lg leading-8 text-gray-300">Przedstawiamy platformę dla uczniów oraz szkół do organizowania korepetycji i łatwego zapisywania się. Super nowoczesna platforma jest dostępna za darmo dla uczniów. <br/>Sprawdź czy Twoja szkoła przystąpiła do <a href="#oferta" class="theme-text theme-text-hover transition-all duration-150">programu EduKorepetycje</a>.</p>
           <div data-aos="fade-up" data-aos-delay="900" data-aos-anchor-placement="top-bottom" class="mt-10 flex items-center justify-center gap-x-6">
-            <a href="register.php" class="rounded-md bg-violet-700 duration-150 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-900  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Zarejestruj się</a>
+            <a href="register" class="rounded-md bg-violet-700 duration-150 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-900  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Zarejestruj się</a>
             <a href="#oferta" class="text-sm font-semibold leading-6 theme-text-hover text-white duration-150 transition-all">Oferta <span aria-hidden="true">→</span></a>
           </div>
         </div>
-        <img data-aos="fade-up" data-aos-delay="100" id="produkt" src="public/img/landing_page/panel.png" alt="App screenshot" width="2432" height="1442" class="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24">
+        <img data-aos="fade-up" data-aos-delay="100" id="produkt" src="public/img/landing_page/panel2.png" alt="App screenshot" width="2432" height="1442" class="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24">
       </div>
     </div>
   </div>

@@ -1,5 +1,11 @@
 <?php
 include '../../scripts/security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 ?>
 <main data-aos="fade-right" data-aos-delay="100" class="">
       <header class="flex items-center justify-between border-b border-white/5 px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,11 @@
 <?php
 include "../security.php";
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $id = $_GET['id'];
 $type = $_GET['type'];
 include "../database/conn_db.php";

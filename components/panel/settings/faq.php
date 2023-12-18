@@ -1,5 +1,11 @@
 <?php
 include "../../../scripts/security.php";
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 ?>
 <div class="divide-y divide-white/5" enctype="multipart/form-data">
     <div class="sm:px-6 lg:px-8 px-4">

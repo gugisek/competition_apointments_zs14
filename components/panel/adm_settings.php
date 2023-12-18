@@ -1,3 +1,10 @@
+<?php
+session_start();
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+?>
 <section data-aos="fade-right" data-aos-delay="100">
     <main>
       <header class=" border-b border-white/5">

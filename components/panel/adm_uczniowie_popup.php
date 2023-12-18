@@ -1,6 +1,12 @@
 <?php
 include '../../scripts/security.php';
 include '../../scripts/database/conn_db.php';
+
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $id = $_GET['id'];
 if($id!='add'){
     $sql = "SELECT users.id, users.name, users.sec_name, users.sur_name, users.mail, user_class.class_id, users.role_id, user_roles.role, users.status_id, users.description, users.school_id, schools.name as school, users.profile_picture, users.background_picture FROM `users` join schools on schools.school_id=users.school_id join user_roles on user_roles.id=users.role_id left join user_class on user_class.class_id=users.class_id WHERE users.id='$id'";

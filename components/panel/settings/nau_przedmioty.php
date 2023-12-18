@@ -1,5 +1,11 @@
 <?php
 include "../../../scripts/security.php";
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
       include "../../../scripts/database/conn_db.php";
       $sql = "SELECT school_id FROM `users` where id=$_SESSION[login_id];";
         $result = mysqli_query($conn, $sql);

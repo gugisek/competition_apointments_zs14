@@ -1,5 +1,11 @@
 <?php
 $id = $_GET['id'];
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $type = $_GET['type'];
 if($id == "add"){
     $row['id'] = "add";

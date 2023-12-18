@@ -1,5 +1,11 @@
 <?php
 include '../security.php';
+
+if($_SESSION['account_type'] != '2' or $_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $id = $_POST['id'];
 include '../database/conn_db.php';
 if ($id == $_SESSION['login_id']) {

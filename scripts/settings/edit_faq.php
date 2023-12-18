@@ -1,5 +1,11 @@
 <?php
 include "../security.php";
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $id = $_POST['id'];
 $question = $_POST['question'];
 $answer = $_POST['answer'];

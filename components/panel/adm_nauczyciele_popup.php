@@ -1,5 +1,11 @@
 <?php
 include '../../scripts/security.php';
+
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 include '../../scripts/database/conn_db.php';
 $id = $_GET['id'];
 if($id!='add'){

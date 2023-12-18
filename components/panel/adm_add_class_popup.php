@@ -1,5 +1,11 @@
 <?php
 include "../../scripts/security.php";
+
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
     $school_id = $_GET['id'];
 ?>
 <form action="scripts/class/add.php" method="POST" class="text-white flex flex-col h-full gap-4 px-2 pb-8" enctype="multipart/form-data">

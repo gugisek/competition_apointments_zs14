@@ -1,5 +1,11 @@
 <?php
 include '../../../scripts/security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 include '../../../scripts/database/conn_db.php';
 $user_id = $_GET['id'];
 $korepetycje_id = $_GET['korepetycja'];

@@ -1,5 +1,11 @@
 <?php
 include '../security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $korepetycja_id = $_POST['korepetycja_id'];
 include '../database/conn_db.php';
 $sql_check = "select * from zapisy_korepetycje where korepetycja_id = $korepetycja_id";

@@ -1,5 +1,11 @@
 <?php
 include '../security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $korepetycja_id = $_POST['korepetycja_id'];
 $przedmiot_id = $_POST['przedmiot_id'];
 $class_id = $_POST['class_id'];

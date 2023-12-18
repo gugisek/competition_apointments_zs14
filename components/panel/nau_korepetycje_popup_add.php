@@ -6,6 +6,12 @@ $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $school_id = $row['school_id'];
 
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
+
 ?>
 <form action="scripts/korepetycje/add.php" method="POST" class="text-white flex flex-col h-full gap-4 px-2 pb-8" enctype="multipart/form-data">
     <div class="sticky z-[10] top-0 bg-[#0e0e0e] flex flex-row items-center justify-between sm:px-0 px-4 border-b border-white/10">

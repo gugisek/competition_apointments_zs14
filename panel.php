@@ -27,9 +27,10 @@
             <?php
             if( $_SESSION['account_status']==2){
                 include 'components/panel/register.php';
+            }else {
+                include 'components/panel/hero.php';
             }
             ?>
-            <?php include 'components/panel/hero.php'; ?>
         </div>
         <section id="popupProfileBg" class="fixed z-[50] h-0 opacity-0 top-0 left-0 w-full h-full bg-[#0000009e] transition-opacity duration-300"></section>
             <section id="popupProfile" onclick="popupProfileCloseConfirm()" class="z-[60] fixed scale-0 top-0 left-0 w-full h-full">

@@ -1,5 +1,11 @@
 <?php
 include "../security.php";
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 include "../database/conn_db.php";
 $id = $_POST['school_id'];
 $name = $_POST['name'];

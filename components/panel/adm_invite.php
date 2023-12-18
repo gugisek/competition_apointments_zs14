@@ -1,5 +1,11 @@
 <?php
 include "../../scripts/security.php";
+
+if($_SESSION['account_type'] != '2'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 ?>
 <!-- drafty/ published czy coś i preview to łtwe będzie bo wystarczy dać publicyty_type i w publikach tylko publiki wyświetlać -->
 <section data-aos="fade-right" data-aos-delay="100" class="sm:px-6 lg:px-8 px-4 pt-8">

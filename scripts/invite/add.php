@@ -1,5 +1,11 @@
 <?php
 include "../security.php";
+
+if($_SESSION['account_type'] != '2' or $_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $code = $_POST['code'];
 $max_uses = $_POST['max_uses'];
 $role_id = $_POST['role_id'];

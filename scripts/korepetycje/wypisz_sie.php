@@ -13,7 +13,7 @@ if(mysqli_num_rows($result_check) > 0){
             $after = "Korepetycja: $korepetycja_id <br/> User: $_SESSION[login_id] <br/> Status: 2 <br/> Powod: Wypisano";
             $object_id=$korepetycja_id;
             $object_type="zapisy";
-            $action_type="2";
+            $action_type="1";
             $desc="Wypisano z korepetycji";
             include "../../scripts/log.php";
     //log

@@ -1,5 +1,11 @@
 <?php
 include '../security.php';
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 $przedmiot_id = $_POST['przedmiot_id'];
 //umieszczenie danych z multi selecta class_id do tablicy i wyświetlenie ich po przecinku
 $class_id = $_POST['class_id'];

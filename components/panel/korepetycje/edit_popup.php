@@ -1,5 +1,11 @@
 <?php
 include "../../../scripts/security.php";
+
+if($_SESSION['account_type'] != '3'){
+    header('Location: ../../404.php');
+    exit();
+}
+
 include "../../../scripts/database/conn_db.php";
 $id = $_GET['korepetycja'];
 $sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(godzina, ' do ', 1), ' ', -1) AS time_od, SUBSTRING_INDEX(godzina, ' do ', -1) AS time_do, status_id, korepetycje.korepetycje_id, korepetycje.school_id, korepetycje.przedmiot_id, korepetycje.max_users, korepetycje.godzina, korepetycje.data, korepetycje.destiny, korepetycje.room_id, buildings.build_id FROM `korepetycje` left JOIN rooms on rooms.room_id=korepetycje.room_id left JOIN buildings on buildings.build_id=rooms.build_id where korepetycje.korepetycje_id=$id;";
