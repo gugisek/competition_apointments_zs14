@@ -27,7 +27,7 @@
             <option value="" class="hidden" disabled selected>Wybierz</option>
             <?php
             include 'scripts/database/conn_db.php';
-            $sql = "SELECT * FROM `schools`";
+            $sql = "SELECT * FROM `schools` where school_id != 9";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)) {
                 echo '<option value="'.$row['school_id'].'" class="capitalize">'.$row['name'].'</option>';
