@@ -245,7 +245,7 @@ if($id!='add'){
         }else if($id!='edit'){
           echo '
           <form action="scripts/users/change_login.php" method="POST" class="px-4 sm:px-6 lg:px-8 border-t border-white/10 py-8">
-                  <input type="hidden" name="id" value="<?=$id?>">
+                  <input type="hidden" name="id" value="'.$id.'">
                   <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
                       <h1 class="text-base font-semibold leading-6 text-gray-300">Logowanie</h1>

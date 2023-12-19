@@ -20,6 +20,7 @@ if($id!='' || $login!='' || $pswd!='') {
     }elseif($login != "" && $pswd != "") {
         $sql = "UPDATE users SET login='$login', pswd='$pswd' WHERE id='$id';";
     }
+
     if ($conn->query($sql) === TRUE) {
         //log
                 $before = "";
