@@ -42,13 +42,13 @@
         <div class="mt-6 flow-root">
           <div class="-my-6 divide-y divide-gray-500/25">
             <div class="space-y-2 py-6">
-              <a onclick="openNavToggle()" href="#produkt" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Produkt</a>
-              <a onclick="openNavToggle()" href="#oferta" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Oferta</a>
-              <a onclick="openNavToggle()" href="#pytania" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Pytania</a>
-              <a onclick="openNavToggle()" href="#kontakt" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Kontakt</a>
+              <a onclick="openNavToggle()" href="#produkt" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-violet-600/30 active:scale-95 transition-all duration-150">Produkt</a>
+              <a onclick="openNavToggle()" href="#oferta" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-violet-600/30 active:scale-95 transition-all duration-150">Oferta</a>
+              <a onclick="openNavToggle()" href="#pytania" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-violet-600/30 active:scale-95 transition-all duration-150">Pytania</a>
+              <a onclick="openNavToggle()" href="#kontakt" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-violet-600/30 active:scale-95 transition-all duration-150">Kontakt</a>
             </div>
             <div class="py-6">
-              <a href="login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800">Zaloguj się</a>
+              <a href="login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-violet-600/30">Zaloguj się</a>
             </div>
           </div>
         </div>

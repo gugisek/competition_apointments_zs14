@@ -1,8 +1,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="Portal dla uczniów i szkół ułatwiający odbywanie korepetycji!">
     <title>EduKorepetycje - portal ułatwiający naukę w oświacie</title>
+    <meta name="theme-color" content="#0e0e0e" />
     <link rel="stylesheet" href="public/css/global.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
