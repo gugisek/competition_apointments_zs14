@@ -8,7 +8,7 @@ include '../database/conn_db.php';
 $sql_check = "select * from korepetycje where korepetycje_id = $korepetycja_id and creator_id = $nau_id;";
 $result_check = mysqli_query($conn, $sql_check);
 if(mysqli_num_rows($result_check) > 0){
-    $sql_check_miejsca = "SELECT max_users, count(zapisy_korepetycje.zapis_id) as 'users' from korepetycje left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.korepetycje_id=$korepetycja_id group by korepetycje.korepetycje_id;";
+    $sql_check_miejsca = "SELECT max_users, count(zapisy_korepetycje.zapis_id) as 'users' from korepetycje left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.korepetycje_id=$korepetycja_id and zapisy_korepetycje.status_id = 1 group by korepetycje.korepetycje_id;";
     $result_check_miejsca = mysqli_query($conn, $sql_check_miejsca);
     $row_check_miejsca = mysqli_fetch_assoc($result_check_miejsca);
     if($row_check_miejsca['max_users'] > $row_check_miejsca['users']){

@@ -30,6 +30,13 @@ $sala = $row['sala'];
 $budynek = $row['budynek'];
 $status = $row['status'];
 
+
+           $sql2 = "select count(*) as 'ile' from zapisy_korepetycje where korepetycja_id = $id and status_id = 1";
+              $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+               
+           
+
  $data = $row['data'];
             // Zamiana daty na obiekt DateTime
             $dateTime = new DateTime($data);
@@ -80,9 +87,9 @@ $status = $row['status'];
                     if($row['status'] == 'odwołane'){
                         echo 'text-gray-400 bg-gray-400/10 ring-gray-400/20';
                     }else{
-                        if($row['uczniowie'] >= $row['max_users']){
+                        if($row2['ile'] >= $row['max_users']){
                         echo 'text-red-400 bg-red-400/10 ring-red-400/20';
-                        }elseif($row['uczniowie'] >= $row['max_users'] * 0.75){
+                        }elseif($row2['ile'] >= $row['max_users'] * 0.65){
                         echo 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/20';
                         }else{
                             echo 'text-green-400 bg-green-400/10 ring-green-400/20';
@@ -137,19 +144,22 @@ $status = $row['status'];
     <div class="border-b border-[#1c1c1c] text-gray-500 text-xs py-2 text-center items-center justify-between">
             <p class="flex items-center justify-center gap-1 py-5">
                 <?php
+                
                     if($row['status'] == 'odwołane'){
                         echo 'Odwołane';
                     }else{
-                        if($row['uczniowie'] >= $row['max_users']){
+                        if($row2['ile'] >= $row['max_users']){
                         echo 'Zapełnione';
-                        }elseif($row['uczniowie'] >= $row['max_users'] * 0.60){
+                        }elseif($row2['ile'] >= $row['max_users'] * 0.65){
                         echo 'Ostatnie miejsca';
                         }else{
                             echo 'Zapisani uczniowie';
                         }
                     }
                 ?>
-           <?=$row['uczniowie']?>/<?=$row['max_users']?>
+           <?php
+                echo $row2['ile'];
+           ?>/<?=$row['max_users']?>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
                 </svg>

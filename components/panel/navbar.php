@@ -34,7 +34,7 @@ while ($row = $result->fetch_assoc()) {
           <li>
             <!-- do ustawień dla Pani Basi aby mogła sobie zaznaczyć jakich przemiotów uczy -->
             <?php if($_SESSION['account_type'] == 4){
-              $sql = "SELECT count(zapis_id) FROM `zapisy_korepetycje` left join korepetycje on korepetycje.korepetycje_id=zapisy_korepetycje.korepetycja_id where users_id = $_SESSION[login_id] and zapisy_korepetycje.status_id=1 and korepetycje.data>=now();";
+              $sql = "SELECT count(zapis_id) FROM `zapisy_korepetycje` left join korepetycje on korepetycje.korepetycje_id=zapisy_korepetycje.korepetycja_id where users_id = $_SESSION[login_id] and zapisy_korepetycje.status_id=1 and korepetycje.status_id = 1 and korepetycje.data>=CURRENT_DATE();";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $korepetycje = $row[0];
@@ -213,7 +213,7 @@ while ($row = $result->fetch_assoc()) {
                 </li>
               </ul>';
             }elseif($_SESSION['account_type'] == 3){
-              $sql = "SELECT count(korepetycje_id) FROM `korepetycje` WHERE `creator_id` = '$_SESSION[login_id]' AND `status_id` = '1' and data >= NOW()";
+              $sql = "SELECT count(korepetycje_id) FROM `korepetycje` WHERE `creator_id` = '$_SESSION[login_id]' AND `status_id` = '1' and data >= curdate()";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $korepetycje = $row[0];
