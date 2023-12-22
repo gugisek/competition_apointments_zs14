@@ -198,7 +198,7 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                             <li onclick="popup_info_korepetycje(`'.$row['id'].'`)" class="">
                                 <div class="hover:bg-[#3d3d3d]/60 cursor-pointer duration-150 transition-all px-4 py-4 sm:px-6 lg:px-8">
                                     <div class="flex items-center gap-x-3">
-                                        <img src="public/img/users/'.$row['profilowe'].'" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
+                                        <img src="public/img/users/'.$row['profilowe'].'" alt="" class="h-7 w-7 object-cover flex-none rounded-full bg-gray-800">
                                         <h3 class="capitalize flex-auto truncate text-sm font-medium leading-3 text-gray-200">
                                         '.$row['przedmiot'].'</br>
                                         <span class="text-xs lowercase font-normal text-gray-500 capitalize">'.$row['nauczyciel'].'</span>
