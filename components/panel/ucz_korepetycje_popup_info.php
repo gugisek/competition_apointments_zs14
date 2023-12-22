@@ -93,7 +93,7 @@ $status = $row['status'];
                     </div>
                     <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
                         <a class="flex gap-x-2 items-center flex-wrap">
-                        <img src="public/img/users/<?=$row['profilowe']?>" alt="" class="h-7 w-7 flex-none rounded-full bg-gray-800">
+                        <img src="public/img/users/<?=$row['profilowe']?>" alt="" class="h-7 w-7 object-cover flex-none rounded-full bg-gray-800">
                         <span class="truncate capitalize">
                         <?=$row['przedmiot']?></span>
                         <span class="text-gray-400">/</span>
