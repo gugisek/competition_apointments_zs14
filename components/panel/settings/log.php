@@ -1,3 +1,13 @@
+<?php
+include "../../../scripts/security.php";
+
+if($_SESSION['account_type'] != '1'){
+    header('Location: ../../404.php');
+    exit();
+}
+
+?>
+
 <section class="w-full py-6 px-6">
     <table class="w-full">
         <tr class="uppercase text-left text-xs text-gray-400 ">
