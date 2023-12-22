@@ -131,10 +131,13 @@ $twoi_uczniowie = implode(',', $twoi_uczniowie);
                 </header>
                 <ul role="list" class="divide-y divide-white/5">
                     <?php
-                        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() and korepetycje.status_id = 1 group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc;";
+                        $sql = "SELECT korepetycje.korepetycje_id as 'id', przedmioty.name as 'przedmiot', concat(users.name, ' ', users.sur_name) as 'nauczyciel', users.profile_picture as 'profilowe', max_users, godzina, data, korepetycje_status.name as 'status', if(isnull(destiny), 'wszyscy', destiny) as 'dla', rooms.name as 'sala', concat(buildings.name, ' ', buildings.street) as 'budynek', count(zapisy_korepetycje.zapis_id) as 'uczniowie' from korepetycje join przedmioty on przedmioty.przedmiot_id=korepetycje.przedmiot_id join users on users.id=korepetycje.creator_id join korepetycje_status on korepetycje_status.status_id=korepetycje.status_id join rooms on rooms.room_id=korepetycje.room_id JOIN buildings on buildings.build_id=rooms.build_id left JOIN zapisy_korepetycje on zapisy_korepetycje.korepetycja_id=korepetycje.korepetycje_id where korepetycje.creator_id = '$login_id' and korepetycje.data >= CURDATE() and korepetycje.status_id = 1 group by korepetycje.korepetycje_id order by korepetycje.data asc, korepetycje.godzina asc limit 4;";
                         $result = mysqli_query($conn, $sql);
                         $is = false;
                         while($row = mysqli_fetch_assoc($result)){
+                            if($row['profilowe'] == ''){
+                                $row['profilowe'] = 'default.png';
+                            }
                             $destiny = $row['dla'];
                             if($row['dla'] != 'wszyscy'){
                             $destiny = '';
