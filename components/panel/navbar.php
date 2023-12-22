@@ -85,7 +85,7 @@ while ($row = $result->fetch_assoc()) {
               </ul>';
             }elseif($_SESSION['account_type'] == 1){
               // administarator główny
-              $sql = "select count(id) from users;";
+              $sql = "select count(id) from users where role_id != 0;";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $users = $row[0];
@@ -162,11 +162,11 @@ while ($row = $result->fetch_assoc()) {
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $school_id = $row[0];
-              $sql = "select count(*) from users where school_id = $school_id and role_id = 4;";
+              $sql = "select count(*) from users where school_id = $school_id and role_id = 4 and role_id != 0;";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $uczniowie = $row[0];
-              $sql = "select count(*) from users where school_id = $school_id and role_id = 3;";
+              $sql = "select count(*) from users where school_id = $school_id and role_id = 3 and role_id != 0;";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_array($result);
               $nauczyciele = $row[0];
